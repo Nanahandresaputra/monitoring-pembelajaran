@@ -6,7 +6,7 @@ const { maskingPwd } = require("../../utils/encrypt.js");
 const getUsers = async (req, res, next) => {
   try {
     let users = await db.query(`select * from useradmin`);
-    if (users.rows.length < 1) {
+    if (users.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
       return res.json(errorCode(1000, "users", users.rows));
@@ -36,10 +36,11 @@ const updateUser = async (req, res, next) => {
   let { nama, username, password } = req.body;
   const { id } = req.params;
   try {
-    let users = await db.query(`update useradmin set nama = '${nama}', username = '${username}', password = '${maskingPwd(password)}' where useradmin.id = ${id}`);
-    if (users.rows.length < 1) {
+    let users = await db.query(`select * from useradmin where useradmin.id = ${id}`);
+    if (users.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
+      await db.query(`update useradmin set nama = '${nama}', username = '${username}', password = '${maskingPwd(password)}' where useradmin.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {
@@ -55,11 +56,12 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   const { id } = req.params;
   try {
-    let users = await db.query(`delete from useradmin where useradmin.id = ${id}`);
+    let users = await db.query(`select * from useradmin where useradmin.id = ${id}`);
 
-    if (users.rows.length < 1) {
+    if (users.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
+      await db.query(`delete from useradmin where useradmin.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {

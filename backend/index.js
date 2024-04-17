@@ -3,9 +3,11 @@ const dotenv = require("dotenv");
 const logger = require("morgan");
 const express = require("express");
 const config = require("./src/config/config.js");
+const { decodeToken } = require("./src/middleware/auth.js");
 
 const authRouter = require("./src/app/auth/router.js");
 const userAdminRouter = require("./src/app/userAdmin/router.js");
+const dosenRouter = require("./src/app/dosen/router.js");
 
 const { port } = config;
 
@@ -18,6 +20,7 @@ app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(decodeToken());
 
 //========================== VIEW ==============================
 
@@ -28,6 +31,7 @@ app.get("/", (req, res) => {
 //========================== ROUTES ==============================
 app.use("/monitoring/api/v1", authRouter);
 app.use("/monitoring/api/v1", userAdminRouter);
+app.use("/monitoring/api/v1", dosenRouter);
 
 //============================ 404 ================================
 

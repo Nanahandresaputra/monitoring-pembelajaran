@@ -13,22 +13,24 @@ function decodeToken() {
     try {
       let token = getToken(req);
 
-      if (`${req.url}`.includes("login") || `${req.url}`.includes("handshake")) return next();
+      if (`${req.url}`.includes("login")) return next();
       if (!token) {
         return res.json(errorCode(9004));
       }
 
       req.user = jwt.verify(token, config.secretKey);
 
-      let user = await db.query(`select * from userAdmin where userAdmin.token = '${token}'`);
+      let user = await db.query(`select * from useradmin where useradmin.token = '${token}'`);
 
-      if (!user) {
+      console.log(user);
+
+      if (user.rowCount < 1) {
         res.json(errorCode(9007));
       }
     } catch (err) {
       let token = getToken(req);
       if ((err && err.name === "JsonWebTokenError") || (err && err.name === "TokenExpiredError")) {
-        await db.query(`update userAdmin set token = null where userAdmin.token = '${token}'`);
+        await db.query(`update useradmin set token = null where useradmin.token = '${token}'`);
         return res.json(errorCode(9007));
       } else {
         return res.json(errorCode(9002));
