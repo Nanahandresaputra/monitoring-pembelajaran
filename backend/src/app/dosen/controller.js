@@ -20,7 +20,6 @@ const getDosen = async (req, res, next) => {
 
 const addDosen = async (req, res, next) => {
   const { nama, nidn, status } = req.body;
-  console.log({ nama, nidn, status });
   try {
     await db.query(`insert into dosen (nama, nidn, status) values ('${nama}', '${nidn}', '${status}')`);
     return res.json(errorCode(1000));
