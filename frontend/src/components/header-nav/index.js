@@ -1,10 +1,10 @@
-import { Breadcrumb } from "antd";
+// import { Breadcrumb } from "antd";
 import React from "react";
 
-const HeaderNav = ({ title, breadcrumb }) => {
+const HeaderNav = ({ title }) => {
   return (
     <section className="flex justify-between items-center">
-      <h1 className="text-[2rem] font-bold">Ini title</h1>
+      <h1 className="text-[2rem] font-bold">{title}</h1>
       {/* <Breadcrumb
         items={[
           {
