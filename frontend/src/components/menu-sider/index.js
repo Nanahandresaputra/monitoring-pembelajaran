@@ -5,27 +5,26 @@ import { HiDocumentText } from "react-icons/hi";
 import { MdDashboardCustomize } from "react-icons/md";
 import logo from "../../assets/logo.svg";
 
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-const items = [
-  getItem("Option 1", "1", <MdDashboardCustomize />),
-  getItem("User", "sub1", <FaUser />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "sub2", <HiDocumentText />, [
-    (getItem("Team 1", "6"), getItem("Team 2", "8")),
-  ]),
-];
 const MenuSider = ({ collapsed }) => {
-  console.log(collapsed);
+  function getItem(label, key, icon, children) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    };
+  }
+  const items = [
+    getItem("Option 1", "1", <MdDashboardCustomize />),
+    getItem("User", "sub1", <FaUser />, [
+      getItem("Tom", "3"),
+      getItem("Bill", "4"),
+      getItem("Alex", "5"),
+    ]),
+    getItem("Team", "sub2", <HiDocumentText />, [
+      (getItem("Team 1", "6"), getItem("Team 2", "8")),
+    ]),
+  ];
   return (
     <section>
       <div className="flex items-center my-[4vh] mx-2">
@@ -34,11 +33,7 @@ const MenuSider = ({ collapsed }) => {
           alt="logo"
           className="w-[4vw] object-contain bg-white rounded-xl"
         />
-        <h3
-          className={
-            collapsed ? "hidden" : "text-xl ms-3 font-semibold text-white"
-          }
-        >
+        <h3 className={collapsed ? "hidden" : "text-xl ms-3 font-semibold"}>
           INI LOGO
         </h3>
       </div>

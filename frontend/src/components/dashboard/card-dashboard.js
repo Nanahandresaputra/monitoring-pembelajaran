@@ -3,11 +3,11 @@ import { FaUsersBetweenLines } from "react-icons/fa6";
 
 const CardDashboard = () => {
   return (
-    <section className="p-[0.8rem] h-[10vh] w-[15rem] drop-shadow-lg shadow-lg bg-red-700 border-2 border-white flex space-x-5 items-center">
-      <FaUsersBetweenLines className="text-white text-[4rem]" />
-      <div className="flex-1 text-white space-y-1">
-        <p className="text-xl font-semibold">Data satu</p>
-        <p className="text-medium">total : 20</p>
+    <section className="rounded-md px-[0.8rem] h-[17vh] flex flex-col justify-center w-ful drop-shadow-lg shadow-lg bg-white space-y-4">
+      <FaUsersBetweenLines className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />
+      <div>
+        <p className="text-lg font-medium">Data satu</p>
+        <p className="text-3xl text-red-500 font-bold">200</p>
       </div>
     </section>
   );
