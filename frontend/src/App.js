@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<OutletPage />}>
           <Route path="" element={<Dashboard />} />
-          <Route path="/Dosen" element={<Dosen />} />
+          <Route path="/Data-1" element={<Dosen />} />
         </Route>
       </Routes>
     </Router>

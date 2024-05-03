@@ -8,7 +8,9 @@ const { Content, Sider } = Layout;
 const OutletPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { pathname } = useLocation();
-  let setHeaderName = `${pathname}`.replace("/", "");
+  let setHeaderName = `${pathname}`.includes("-")
+    ? `${pathname}`.replace("-", " ").replace("/", "")
+    : `${pathname}`.replace("/", "");
 
   return (
     <Layout
@@ -17,7 +19,11 @@ const OutletPage = () => {
         minHeight: "100vh",
       }}
     >
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+      >
         <MenuSider collapsed={collapsed} />
       </Sider>
       <Layout>
