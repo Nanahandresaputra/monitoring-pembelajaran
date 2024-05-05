@@ -6,10 +6,12 @@ import { MdDashboardCustomize } from "react-icons/md";
 import logo from "../../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 
-const MenuSider = ({ collapsed }) => {
+const MenuSider = ({ collapsed, selection }) => {
   const navigate = useNavigate();
 
-  function getItem(label, key, icon, children, isLink) {
+  console.log(selection);
+
+  function getItem(label, key, icon, children) {
     let item = {
       label,
       key,
@@ -39,7 +41,7 @@ const MenuSider = ({ collapsed }) => {
         <img src={logo} alt="logo" className="w-[4vw] object-contain bg-white rounded-xl" />
         <h3 className={collapsed ? "hidden" : "text-xl ms-3 font-semibold"}>INI LOGO</h3>
       </div>
-      <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
+      <Menu defaultSelectedKeys={["Dashboard"]} selectedKeys={[selection]} mode="inline" items={items} />
     </section>
   );
 };

@@ -8,9 +8,7 @@ const { Content, Sider } = Layout;
 const OutletPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { pathname } = useLocation();
-  let setHeaderName = `${pathname}`.includes("-")
-    ? `${pathname}`.replace("-", " ").replace("/", "")
-    : `${pathname}`.replace("/", "");
+  let setSelection = `${pathname}`.includes("-") ? `${pathname}`.replace("-", " ").replace("/", "") : `${pathname}`.replace("/", "");
 
   return (
     <Layout
@@ -19,16 +17,12 @@ const OutletPage = () => {
         minHeight: "100vh",
       }}
     >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <MenuSider collapsed={collapsed} />
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <MenuSider collapsed={collapsed} selection={`${pathname}`.replace("/", "") ? `${pathname}`.replace("/", "") : "Dashboard"} />
       </Sider>
       <Layout>
         <Content className="m-5 space-y-4">
-          <HeaderNav title={setHeaderName ? setHeaderName : "Dashboard"} />
+          <HeaderNav title={setSelection ? setSelection : "Dashboard"} />
           <Outlet />
         </Content>
       </Layout>
