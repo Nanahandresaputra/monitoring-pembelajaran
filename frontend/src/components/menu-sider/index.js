@@ -36,12 +36,15 @@ const MenuSider = ({ collapsed, selection }) => {
   ];
   //<p></p>
   return (
-    <section>
+    <section className="h-full flex flex-col relative">
       <div className="flex items-center my-[4vh] mx-2">
         <img src={logo} alt="logo" className="w-[4vw] object-contain bg-white rounded-xl" />
         <h3 className={collapsed ? "hidden" : "text-xl ms-3 font-semibold"}>INI LOGO</h3>
       </div>
-      <Menu defaultSelectedKeys={["Dashboard"]} selectedKeys={[selection]} mode="inline" items={items} />
+      <div className="flex flex-col justify-between flex-1">
+        <Menu defaultSelectedKeys={["Dashboard"]} selectedKeys={[selection]} mode="inline" items={items} />
+        <div className=" w-full h-9 bg-red-900 flex justify-center items-center border-b-4 border-blue-800">test</div>
+      </div>
     </section>
   );
 };

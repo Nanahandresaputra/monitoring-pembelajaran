@@ -2,24 +2,9 @@ import { Divider, Table } from "antd";
 import React from "react";
 
 const TableDetail = () => {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  const lorem = [
-    "Lorem ipsum dolor",
-    "sit amet",
-    "consectetur adip",
-    "condimentum erat nec",
-    "consectetur erat",
-    "Vestibulum ante ipsum primis in faucibus",
-  ];
+  const lorem = ["Lorem ipsum dolor", "sit amet", "consectetur adip", "condimentum erat nec", "consectetur erat", "Vestibulum ante ipsum primis in faucibus"];
 
   const test = ["Test 1A", "Test 2A", "Test 3B", "Test 4A", "Test 5A"];
 
