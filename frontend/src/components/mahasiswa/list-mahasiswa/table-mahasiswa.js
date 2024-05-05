@@ -1,15 +1,23 @@
 import { Button, Table, Tag } from "antd";
 import React, { useState } from "react";
 
-const TableDataDsn = ({ data }) => {
+const TableMahasiswa = ({ data }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
   const dataSource = data.map((datas, index) => ({
     key: index,
     code: datas.code,
     nama: datas.nama,
+    class: datas.class,
+    prod: datas.prod,
+    fax: datas.fax,
     status: datas.status,
+    // action: datas.action,
   }));
+
+  const filterClass = [...new Set(data.map((datas) => datas.class))].map((dataClass) => ({ text: dataClass, value: dataClass }));
+  const filterProd = [...new Set(data.map((datas) => datas.prod))].map((prod) => ({ text: prod, value: prod }));
+  const filterFax = [...new Set(data.map((datas) => datas.fax))].map((fax) => ({ text: fax, value: fax }));
 
   const columns = [
     {
@@ -21,6 +29,27 @@ const TableDataDsn = ({ data }) => {
       title: "Nama",
       dataIndex: "nama",
       key: "nama",
+    },
+    {
+      title: "Class",
+      dataIndex: "class",
+      key: "class",
+      filters: filterClass,
+      onFilter: (value, record) => record.class === value,
+    },
+    {
+      title: "Prod",
+      dataIndex: "prod",
+      key: "prod",
+      filters: filterProd,
+      onFilter: (value, record) => record.prod === value,
+    },
+    {
+      title: "Fax",
+      dataIndex: "fax",
+      key: "fax",
+      filters: filterFax,
+      onFilter: (value, record) => record.prod === value,
     },
     {
       title: "Status",
@@ -76,4 +105,4 @@ const TableDataDsn = ({ data }) => {
   );
 };
 
-export default TableDataDsn;
+export default TableMahasiswa;

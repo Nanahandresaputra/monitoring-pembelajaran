@@ -1,14 +1,24 @@
-import { Button, Table, Tag } from "antd";
+import { Table, Tag } from "antd";
 import React, { useState } from "react";
 
-const TableDataDsn = ({ data }) => {
+const TablekelasMahasiswa = () => {
   const [selectedRow, setSelectedRow] = useState("");
+
+  const data = new Array(25).fill().map((_, index) => ({
+    code: Math.floor(Math.random(index) * 98765),
+    nama: `nama ${index}`,
+    class: `TEST ${Math.floor(Math.random(index) * 4)}`,
+    prod: "Prod Test Information",
+    fax: "Test",
+    status: Math.floor(Math.random(index) * 2),
+  }));
 
   const dataSource = data.map((datas, index) => ({
     key: index,
     code: datas.code,
     nama: datas.nama,
     status: datas.status,
+    // action: datas.action,
   }));
 
   const columns = [
@@ -47,18 +57,6 @@ const TableDataDsn = ({ data }) => {
         }
       },
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => {
-        return (
-          <Button type="primary" size="small">
-            Edit
-          </Button>
-        );
-      },
-    },
   ];
   return (
     <Table
@@ -72,8 +70,9 @@ const TableDataDsn = ({ data }) => {
           },
         };
       }}
+      pagination={{ pageSize: 7 }}
     />
   );
 };
 
-export default TableDataDsn;
+export default TablekelasMahasiswa;

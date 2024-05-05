@@ -18,6 +18,7 @@ export const themme = {
       colorPrimaryHover: "rgb(253, 92, 100)",
       colorPrimary: "rgb(245, 34, 45)",
       colorPrimaryActive: "rgb(193, 6, 16)",
+      controlHeightSM: 22,
     },
     Checkbox: {
       colorPrimary: "rgb(239, 68, 68)",

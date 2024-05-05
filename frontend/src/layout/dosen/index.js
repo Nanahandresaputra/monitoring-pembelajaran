@@ -11,14 +11,9 @@ const Dosen = () => {
     code: Math.floor(Math.random(index) * 98765),
     nama: `nama ${index}`,
     status: Math.floor(Math.random(index) * 2),
-    address: "address, street, city, country",
   }));
 
-  let searchFilter = searchData
-    ? data.filter((datas) =>
-        `${datas.nama}`.toUpperCase().includes(`${searchData}`.toUpperCase())
-      )
-    : data;
+  let searchFilter = searchData ? data.filter((datas) => `${datas.nama}`.toUpperCase().includes(`${searchData}`.toUpperCase())) : data;
 
   return (
     <section className="grid grid-cols-7 gap-x-4">
