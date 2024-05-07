@@ -9,6 +9,7 @@ import Faxu from "./layout/aka/fax";
 import Prod from "./layout/aka/prod";
 import MK from "./layout/aka/mk";
 import Login from "./pages/auth";
+import DataAdmin from "./layout/admin";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/Data-Ak2" element={<Faxu />} />
           <Route path="/Data-Ak3" element={<Prod />} />
           <Route path="/Data-Ak4" element={<MK />} />
+          <Route path="/Admin" element={<DataAdmin />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
