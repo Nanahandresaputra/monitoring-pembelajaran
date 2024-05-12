@@ -24,7 +24,6 @@ const addDosen = async (req, res, next) => {
     await db.query(`insert into dosen (nama, nidn, status) values ('${nama}', '${nidn}', '${status}')`);
     return res.json(errorCode(1000));
   } catch (err) {
-    console.log(err);
     if (err && err.name === "error") {
       return res.json(errorCode(9003));
     } else {

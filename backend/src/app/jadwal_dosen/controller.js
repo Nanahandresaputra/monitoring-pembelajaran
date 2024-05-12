@@ -25,7 +25,6 @@ const addjadwalDosen = async (req, res, next) => {
     await db.query(`insert into jadwal_dosen (dosen_id, matkul_id, jam, hari) values ('${dosen_id}', '${matkul_id}', '${jam}', '${hari}')`);
     return res.json(errorCode(1000));
   } catch (err) {
-    console.log(err);
     if (err && err.name === "error") {
       return res.json(errorCode(9003));
     } else {

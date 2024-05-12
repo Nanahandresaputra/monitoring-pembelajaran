@@ -22,8 +22,6 @@ function decodeToken() {
 
       let user = await db.query(`select * from useradmin where useradmin.token = '${token}'`);
 
-      console.log(user);
-
       if (user.rowCount < 1) {
         res.json(errorCode(9007));
       }

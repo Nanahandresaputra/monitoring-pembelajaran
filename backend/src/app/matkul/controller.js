@@ -24,7 +24,6 @@ const addMatkul = async (req, res, next) => {
     await db.query(`insert into matkul (matkul) values ('${matkul}')`);
     return res.json(errorCode(1000));
   } catch (err) {
-    console.log(err);
     if (err && err.name === "error") {
       return res.json(errorCode(9003));
     } else {
