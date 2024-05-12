@@ -16,6 +16,26 @@ const getKelas = async (req, res, next) => {
   }
 };
 
+//=================================== GET KELAS DETAIL ===============================
+
+const getKelasDetail = async (req, res, next) => {
+  let { id } = req.params;
+  try {
+    let kelasMhs = await db.query(`select m.nama, m.nim, m.status from mahasiswa m where m.kelas_id = ${id}`);
+    let kelasJdwl = await db.query(`select d.nama as pengampu, mk.matkul, jd.jam, jd.hari from jadwal_dosen jd join matkul mk on jd.matkul_id = mk.id 
+    join dosen d on jd.dosen_id = d.id where jd.kelas_id = ${id}`);
+
+    let detailKelas = {
+      mahasiswa: kelasMhs.rows,
+      jadwal: kelasJdwl.rows,
+    };
+
+    return res.json(errorCode(1000, "data", detailKelas));
+  } catch (err) {
+    return res.json(errorCode(9002));
+  }
+};
+
 //=================================== ADD KELAS ===============================
 
 const addKelas = async (req, res, next) => {
@@ -71,4 +91,4 @@ const deleteKelas = async (req, res, next) => {
   }
 };
 
-module.exports = { getKelas, addKelas, updateKelas, deleteKelas };
+module.exports = { getKelas, addKelas, updateKelas, deleteKelas, getKelasDetail };

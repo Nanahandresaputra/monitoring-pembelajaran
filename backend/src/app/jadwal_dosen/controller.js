@@ -5,8 +5,9 @@ const errorCode = require("../../middleware/errorCode");
 
 const getJadwalDosen = async (req, res, next) => {
   try {
-    let jadwalDosen = await db.query(`select jd.id, d.nama as dosen, mt.matkul, jd.jam, jd.hari from jadwal_dosen jd 
-    inner join dosen d on (jd.dosen_id = d.id) inner join matkul mt on (jd.matkul_id = mt.id)`);
+    let jadwalDosen = await db.query(`select jd.id, d.nama, mk.matkul, k.kelas, jd.jam, jd.hari 
+    from jadwal_dosen jd join dosen d on jd.dosen_id = d.id join matkul mk on jd.matkul_id = mk.id
+    join kelas k on jd.kelas_id = k.id`);
     if (jadwalDosen.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {

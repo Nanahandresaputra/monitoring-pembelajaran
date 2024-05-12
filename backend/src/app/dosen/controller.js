@@ -16,6 +16,32 @@ const getDosen = async (req, res, next) => {
   }
 };
 
+//=================================== GET DOSEN DETAIL ===============================
+
+const getDosenDetail = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    let dosenData = await db.query(`select nama, nidn, status from dosen d where d.id = ${id}`);
+    let dosenJadwal = await db.query(`select k.kelas, mk.matkul, jd.jam, jd.hari 
+    from jadwal_dosen jd join dosen d on jd.dosen_id = d.id join matkul mk on jd.matkul_id = mk.id
+    join kelas k on jd.kelas_id = k.id where d.id = ${id}`);
+    if (dosenData.rowCount < 1) {
+      return res.json(errorCode(9001));
+    } else {
+      let detailDosen = {
+        nama: dosenData.rows[0].nama,
+        nidn: dosenData.rows[0].nidn,
+        status: dosenData.rows[0].status,
+        jadwal: dosenJadwal.rows,
+      };
+
+      return res.json(errorCode(1000, "data", detailDosen));
+    }
+  } catch (err) {
+    return res.json(errorCode(9002));
+  }
+};
+
 //=================================== ADD DOSEN ===============================
 
 const addDosen = async (req, res, next) => {
@@ -72,4 +98,4 @@ const deleteDosen = async (req, res, next) => {
   }
 };
 
-module.exports = { getDosen, addDosen, updateDosen, deleteDosen };
+module.exports = { getDosen, addDosen, updateDosen, deleteDosen, getDosenDetail };

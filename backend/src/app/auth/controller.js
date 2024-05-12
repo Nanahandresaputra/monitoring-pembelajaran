@@ -14,9 +14,13 @@ const login = async (req, res, next) => {
     if (user.rows[0].token != null) {
       throw new Error(9006);
     } else {
-      let signed = jwt.sign({ user: user.rows[0].id }, config.secretKey, {
-        expiresIn: 900,
-      });
+      let signed = jwt.sign(
+        { user: user.rows[0].id },
+        config.secretKey
+        //    {
+        //   expiresIn: 900,
+        // }
+      );
       await db.query(`update userAdmin set token = '${signed}' where userAdmin.username = '${payload.username}'`);
 
       return res.json(errorCode(1000, "token", signed));
