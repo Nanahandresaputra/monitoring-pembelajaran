@@ -1,5 +1,6 @@
-import { Button, Table, Tag } from "antd";
+import { Button, Popconfirm, Table, Tag } from "antd";
 import React, { useState } from "react";
+import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
 const TableJdw = ({ data }) => {
   const [selectedRow, setSelectedRow] = useState("");
@@ -46,11 +47,26 @@ const TableJdw = ({ data }) => {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      width: 200,
       render: (_, record) => {
         return (
-          <Button type="primary" size="small">
-            Edit
-          </Button>
+          <div className="flex items-center space-x-5">
+            <Button type="primary">
+              <FaEdit />
+            </Button>
+            <Popconfirm
+              title="Hapus data"
+              description="Apakah yakin ingin menghapus data ini?"
+              onConfirm={() => console.log("confirm")}
+              onCancel={() => console.log("cancel")}
+              okText="Ya"
+              cancelText="Tidak"
+            >
+              <Button>
+                <FaRegTrashAlt />
+              </Button>
+            </Popconfirm>
+          </div>
         );
       },
     },

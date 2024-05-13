@@ -1,5 +1,6 @@
-import { Button, Table, Tag } from "antd";
+import { Button, Popconfirm, Table, Tag } from "antd";
 import React, { useState } from "react";
+import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
 const TableMahasiswa = ({ data }) => {
   const [selectedRow, setSelectedRow] = useState("");
@@ -15,9 +16,16 @@ const TableMahasiswa = ({ data }) => {
     // action: datas.action,
   }));
 
-  const filterClass = [...new Set(data.map((datas) => datas.class))].map((dataClass) => ({ text: dataClass, value: dataClass }));
-  const filterProd = [...new Set(data.map((datas) => datas.prod))].map((prod) => ({ text: prod, value: prod }));
-  const filterFax = [...new Set(data.map((datas) => datas.fax))].map((fax) => ({ text: fax, value: fax }));
+  const filterClass = [...new Set(data.map((datas) => datas.class))].map(
+    (dataClass) => ({ text: dataClass, value: dataClass })
+  );
+  const filterProd = [...new Set(data.map((datas) => datas.prod))].map(
+    (prod) => ({ text: prod, value: prod })
+  );
+  const filterFax = [...new Set(data.map((datas) => datas.fax))].map((fax) => ({
+    text: fax,
+    value: fax,
+  }));
 
   const columns = [
     {
@@ -80,11 +88,26 @@ const TableMahasiswa = ({ data }) => {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      width: 200,
       render: (_, record) => {
         return (
-          <Button type="primary" size="small">
-            Edit
-          </Button>
+          <div className="flex items-center space-x-5">
+            <Button type="primary">
+              <FaEdit />
+            </Button>
+            <Popconfirm
+              title="Hapus data"
+              description="Apakah yakin ingin menghapus data ini?"
+              onConfirm={() => console.log("confirm")}
+              onCancel={() => console.log("cancel")}
+              okText="Ya"
+              cancelText="Tidak"
+            >
+              <Button>
+                <FaRegTrashAlt />
+              </Button>
+            </Popconfirm>
+          </div>
         );
       },
     },
@@ -93,7 +116,9 @@ const TableMahasiswa = ({ data }) => {
     <Table
       columns={columns}
       dataSource={dataSource}
-      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
+      rowClassName={(record, index) =>
+        record.key === selectedRow && "bg-[#fafafa]"
+      }
       onRow={(record) => {
         return {
           onClick: () => {

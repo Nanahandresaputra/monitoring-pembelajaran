@@ -18,7 +18,8 @@ export const themme = {
       colorPrimaryHover: "rgb(253, 92, 100)",
       colorPrimary: "rgb(245, 34, 45)",
       colorPrimaryActive: "rgb(193, 6, 16)",
-      controlHeightSM: 22,
+      defaultColor: "rgba(250, 9, 9, 0.88)",
+      defaultBorderColor: "rgb(249, 66, 66)",
     },
     Checkbox: {
       colorPrimary: "rgb(239, 68, 68)",
@@ -27,6 +28,7 @@ export const themme = {
     },
     Table: {
       colorPrimary: "rgb(239, 68, 68)",
+      cellPaddingBlock: 10,
     },
     Input: {
       activeBorderColor: "rgb(245, 34, 45)",
