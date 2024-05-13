@@ -11,18 +11,17 @@ const dashboardRouter = require("../app/dashboard/router.js");
 
 const express = require("express");
 
-const app = express.Router();
+const app = express();
 
-const routes = app
-  .use(authRouter)
-  .use(userAdminRouter)
-  .use(dosenRouter)
-  .use(matkulRouter)
-  .use(fakultasRouter)
-  .use(jadwalRouter)
-  .use(prodiRouter)
-  .use(kelasRouter)
-  .use(mahasiswaRouter)
-  .use(dashboardRouter);
+app.use("/monitoring/api/v1", authRouter);
+app.use("/monitoring/api/v1", userAdminRouter);
+app.use("/monitoring/api/v1", dosenRouter);
+app.use("/monitoring/api/v1", matkulRouter);
+app.use("/monitoring/api/v1", fakultasRouter);
+app.use("/monitoring/api/v1", jadwalRouter);
+app.use("/monitoring/api/v1", prodiRouter);
+app.use("/monitoring/api/v1", kelasRouter);
+app.use("/monitoring/api/v1", mahasiswaRouter);
+app.use("/monitoring/api/v1", dashboardRouter);
 
-module.exports = app.use("/monitoring/api/v1", routes);
+module.exports = app;
