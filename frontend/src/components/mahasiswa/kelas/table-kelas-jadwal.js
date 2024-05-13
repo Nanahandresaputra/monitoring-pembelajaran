@@ -35,7 +35,7 @@ const TableKelasJadwal = () => {
       key: "time",
     },
   ];
-  return <Table columns={columns} dataSource={dataJdwl} pagination={{ pageSize: 7 }} />;
+  return <Table columns={columns} dataSource={dataJdwl} pagination={{ pageSize: 8 }} />;
 };
 
 export default TableKelasJadwal;

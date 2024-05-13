@@ -43,7 +43,7 @@ const TableDetail = () => {
       <Divider>
         <p className="font-normal">Datas Data1</p>
       </Divider>
-      <Table columns={columns} dataSource={data} pagination={{ pageSize: 7 }} />
+      <Table columns={columns} dataSource={data} pagination={{ pageSize: 8 }} />
     </>
   );
 };

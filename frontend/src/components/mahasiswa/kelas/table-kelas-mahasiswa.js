@@ -70,7 +70,7 @@ const TablekelasMahasiswa = () => {
           },
         };
       }}
-      pagination={{ pageSize: 7 }}
+      pagination={{ pageSize: 8 }}
     />
   );
 };

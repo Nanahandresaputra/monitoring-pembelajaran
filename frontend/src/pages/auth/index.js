@@ -1,10 +1,37 @@
 import React from "react";
 import { ilustratorImg, logo } from "../../assets";
 import { Button, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAuth, setLoading } from "../../store/action/auth";
+import { openNotifications } from "../../utils/notification";
+import { tokenDecode } from "../../utils/tokenDecode";
 
 const Login = () => {
-  return (
+  const { loading } = useSelector((state) => state.loadingData);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const token = localStorage.token;
+
+  const submitAuth = () => {
+    form.submit();
+    form
+      .validateFields()
+      .then((res) =>
+        dispatch(loginAuth(res))
+          .then(() => navigate("/"))
+          .catch((err) => openNotifications(err.errorCode, err.message))
+      )
+      .catch((err) => console.log(err));
+  };
+
+  console.log(tokenDecode(token));
+
+  return token ? (
+    <Navigate to="/" />
+  ) : (
     <section className="grid w-full h-screen grid-cols-2">
       <div className="w-full h-full bg-red-600 col-span-1 flex flex-col space-y-7 justify-center items-center">
         <div className="fixed top-5 left-5 flex items-center space-x-2">
@@ -22,7 +49,7 @@ const Login = () => {
       </div>
       <div className="w-full h-full bg-red-50 col-span-1 flex flex-col justify-center items-center space-y-12">
         <p className="text-[2rem] font-bold">Login</p>
-        <Form layout="vertical" className="w-6/12">
+        <Form layout="vertical" className="w-6/12" form={form}>
           <Form.Item
             label="Username"
             name="username"
@@ -33,7 +60,9 @@ const Login = () => {
               },
             ]}
           >
-            <Input size="large" />
+            <div>
+              <Input size="large" autoComplete="off" placeholder="masukan username" />
+            </div>
           </Form.Item>
 
           <Form.Item
@@ -46,11 +75,13 @@ const Login = () => {
               },
             ]}
           >
-            <Input.Password size="large" />
+            <div>
+              <Input.Password size="large" autoComplete="off" placeholder="masukan password" />
+            </div>
           </Form.Item>
 
           <Form.Item className="mt-12">
-            <Button type="primary" htmlType="submit" className="w-full" size="large">
+            <Button type="primary" htmlType="submit" className="w-full" size="large" onClick={submitAuth} loading={loading}>
               Submit
             </Button>
           </Form.Item>

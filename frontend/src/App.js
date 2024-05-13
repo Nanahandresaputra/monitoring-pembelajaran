@@ -10,12 +10,21 @@ import Prod from "./layout/aka/prod";
 import MK from "./layout/aka/mk";
 import Login from "./pages/auth";
 import DataAdmin from "./layout/admin";
+import PrivateRouter from "./pages/private-router";
+import PageNotFound from "./pages/404";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<OutletPage />}>
+        <Route
+          path="/"
+          element={
+            <PrivateRouter>
+              <OutletPage />
+            </PrivateRouter>
+          }
+        >
           <Route path="" element={<Dashboard />} />
           <Route path="/Data-1" element={<Dosen />} />
           <Route path="/List-Data" element={<ListMahasiswa />} />
@@ -27,6 +36,7 @@ function App() {
           <Route path="/Admin" element={<DataAdmin />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );

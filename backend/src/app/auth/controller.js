@@ -15,7 +15,7 @@ const login = async (req, res, next) => {
       throw new Error(9006);
     } else {
       let signed = jwt.sign(
-        { user: user.rows[0].id },
+        { id: user.rows[0].id, admin: user.rows[0].nama },
         config.secretKey
         //    {
         //   expiresIn: 900,

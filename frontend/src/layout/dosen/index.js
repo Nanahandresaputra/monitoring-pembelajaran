@@ -16,8 +16,8 @@ const Dosen = () => {
   let searchFilter = searchData ? data.filter((datas) => `${datas.nama}`.toUpperCase().includes(`${searchData}`.toUpperCase())) : data;
 
   return (
-    <section className="grid grid-cols-7 gap-x-4">
-      <div className="col-span-4">
+    <section className="grid grid-cols-9 gap-x-4">
+      <div className="col-span-5">
         <CardContainer>
           <div className="flex justify-between items-center">
             <InputSearch placeholder="cari data" setState={setSearchData} />
@@ -29,7 +29,7 @@ const Dosen = () => {
           <TableDataDsn data={searchFilter} />
         </CardContainer>
       </div>
-      <div className="col-span-3">
+      <div className="col-span-4">
         <CardContainer>
           <h3 className="font-medium text-lg">Detail Data</h3>
 

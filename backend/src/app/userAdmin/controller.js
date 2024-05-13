@@ -5,7 +5,7 @@ const { maskingPwd } = require("../../utils/encrypt.js");
 //=================================== GET USER ===============================
 const getUsers = async (req, res, next) => {
   try {
-    let users = await db.query(`select * from useradmin`);
+    let users = await db.query(`select id, nama, username from useradmin`);
     if (users.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
