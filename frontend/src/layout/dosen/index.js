@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import CardContainer from "./../../components/card-container/index";
 import InputSearch from "../../components/input-search";
-import { Button, Tag } from "antd";
+import { Button, Form, Modal, Tag } from "antd";
 import TableDataDsn from "../../components/dosen/table-data";
 import TableDetail from "../../components/dosen/table-detail";
+import FormDosen from "../../components/dosen/form-data-ds";
 
 const Dosen = () => {
   const [searchData, setSearchData] = useState("");
@@ -13,20 +14,79 @@ const Dosen = () => {
     status: Math.floor(Math.random(index) * 2),
   }));
 
-  let searchFilter = searchData ? data.filter((datas) => `${datas.nama}`.toUpperCase().includes(`${searchData}`.toUpperCase())) : data;
+  let searchFilter = searchData
+    ? data.filter((datas) =>
+        `${datas.nama}`.toUpperCase().includes(`${searchData}`.toUpperCase())
+      )
+    : data;
+
+  const [form] = Form.useForm();
+
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleUpdate = () => {
+    form.submit();
+    form
+      .validateFields()
+      .then((res) => {
+        console.log(res);
+        setIsModalOpen(false);
+        form.resetFields();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleAdd = () => {
+    form.submit();
+    form
+      .validateFields()
+      .then((res) => {
+        console.log(res);
+        setIsModalOpen(false);
+        form.resetFields();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    form.resetFields();
+  };
+
+  const onOpen = () => {
+    setIsModalOpen(true);
+    form.setFieldsValue({ status: 0 });
+  };
 
   return (
     <section className="grid grid-cols-9 gap-x-4">
+      <Modal
+        title="Update data 1"
+        open={isModalOpen}
+        onOk={handleUpdate}
+        onCancel={handleCancel}
+      >
+        <FormDosen form={form} />
+      </Modal>
+      <Modal
+        title="Data data 1"
+        open={isModalOpen}
+        onOk={handleAdd}
+        onCancel={handleCancel}
+      >
+        <FormDosen form={form} />
+      </Modal>
       <div className="col-span-5">
         <CardContainer>
           <div className="flex justify-between items-center">
             <InputSearch placeholder="cari data" setState={setSearchData} />
-            <Button type="primary" className="font-medium">
+            <Button type="primary" className="font-medium" onClick={onOpen}>
               + Tambah
             </Button>
           </div>
 
-          <TableDataDsn data={searchFilter} />
+          <TableDataDsn data={searchFilter} onOpen={onOpen} />
         </CardContainer>
       </div>
       <div className="col-span-4">

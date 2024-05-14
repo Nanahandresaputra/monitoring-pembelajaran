@@ -2,7 +2,7 @@ import { Button, Popconfirm, Table } from "antd";
 import React from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableKelas = ({ data }) => {
+const TableKelas = ({ data, onOpen }) => {
   const dataSource = data.map((datas, index) => ({
     key: index,
     class: datas.class,
@@ -28,7 +28,7 @@ const TableKelas = ({ data }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary">
+            <Button type="primary" onClick={onOpen}>
               <FaEdit />
             </Button>
             <Popconfirm

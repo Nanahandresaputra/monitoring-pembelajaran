@@ -2,7 +2,7 @@ import { Button, Popconfirm, Table, Tag } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableMahasiswa = ({ data }) => {
+const TableMahasiswa = ({ data, onOpen }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
   const dataSource = data.map((datas, index) => ({
@@ -92,7 +92,7 @@ const TableMahasiswa = ({ data }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary">
+            <Button type="primary" onClick={onOpen}>
               <FaEdit />
             </Button>
             <Popconfirm

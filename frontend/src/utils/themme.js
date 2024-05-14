@@ -40,5 +40,11 @@ export const themme = {
       colorPrimaryBorder: "rgb(253, 167, 171)",
       colorPrimaryHover: "rgb(255, 69, 78)",
     },
+    Select: {
+      colorPrimaryHover: "rgb(252, 95, 103)",
+      colorPrimary: "rgb(245, 34, 45)",
+      optionSelectedBg: "#fff1f0",
+      optionActiveBg: "#fff1f0",
+    },
   },
 };
