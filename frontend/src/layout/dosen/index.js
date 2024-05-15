@@ -23,7 +23,7 @@ const Dosen = () => {
   const [form] = Form.useForm();
 
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
 
   const handleUpdate = () => {
     form.submit();
@@ -31,7 +31,7 @@ const Dosen = () => {
       .validateFields()
       .then((res) => {
         console.log(res);
-        setIsModalOpen(false);
+        isModalOpenUpdate(false);
         form.resetFields();
       })
       .catch((err) => console.log(err));
@@ -43,19 +43,29 @@ const Dosen = () => {
       .validateFields()
       .then((res) => {
         console.log(res);
-        setIsModalOpen(false);
+        setIsModalOpenAdd(false);
         form.resetFields();
       })
       .catch((err) => console.log(err));
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelUpdate = () => {
+    setIsModalOpenUpdate(false);
     form.resetFields();
   };
 
-  const onOpen = () => {
-    setIsModalOpen(true);
+  const handleCancelAdd = () => {
+    setIsModalOpenAdd(false);
+    form.resetFields();
+  };
+
+  const onOpenUpdate = () => {
+    setIsModalOpenUpdate(true);
+    form.setFieldsValue({ status: 0 });
+  };
+
+  const onOpenAdd = () => {
+    setIsModalOpenAdd(true);
     form.setFieldsValue({ status: 0 });
   };
 
@@ -63,17 +73,17 @@ const Dosen = () => {
     <section className="grid grid-cols-9 gap-x-4">
       <Modal
         title="Update data 1"
-        open={isModalOpen}
+        open={isModalOpenUpdate}
         onOk={handleUpdate}
-        onCancel={handleCancel}
+        onCancel={handleCancelUpdate}
       >
         <FormDosen form={form} />
       </Modal>
       <Modal
-        title="Data data 1"
-        open={isModalOpen}
+        title="Add data 1"
+        open={isModalOpenAdd}
         onOk={handleAdd}
-        onCancel={handleCancel}
+        onCancel={handleCancelAdd}
       >
         <FormDosen form={form} />
       </Modal>
@@ -81,12 +91,12 @@ const Dosen = () => {
         <CardContainer>
           <div className="flex justify-between items-center">
             <InputSearch placeholder="cari data" setState={setSearchData} />
-            <Button type="primary" className="font-medium" onClick={onOpen}>
+            <Button type="primary" className="font-medium" onClick={onOpenAdd}>
               + Tambah
             </Button>
           </div>
 
-          <TableDataDsn data={searchFilter} onOpen={onOpen} />
+          <TableDataDsn data={searchFilter} onOpen={onOpenUpdate} />
         </CardContainer>
       </div>
       <div className="col-span-4">

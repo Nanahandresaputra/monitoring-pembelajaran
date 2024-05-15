@@ -25,7 +25,8 @@ const ListMahasiswa = () => {
 
   const [form] = Form.useForm();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
 
   const handleUpdate = () => {
     form.submit();
@@ -33,7 +34,7 @@ const ListMahasiswa = () => {
       .validateFields()
       .then((res) => {
         console.log(res);
-        setIsModalOpen(false);
+        setIsModalOpenUpdate(false);
         form.resetFields();
       })
       .catch((err) => console.log(err));
@@ -45,19 +46,29 @@ const ListMahasiswa = () => {
       .validateFields()
       .then((res) => {
         console.log(res);
-        setIsModalOpen(false);
+        setIsModalOpenAdd(false);
         form.resetFields();
       })
       .catch((err) => console.log(err));
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelUpdate = () => {
+    setIsModalOpenUpdate(false);
     form.resetFields();
   };
 
-  const onOpen = () => {
-    setIsModalOpen(true);
+  const onOpenUpdate = () => {
+    setIsModalOpenUpdate(true);
+    form.setFieldsValue({ status: 0 });
+  };
+
+  const handleCancelAdd = () => {
+    setIsModalOpenAdd(false);
+    form.resetFields();
+  };
+
+  const onOpenAdd = () => {
+    setIsModalOpenAdd(true);
     form.setFieldsValue({ status: 0 });
   };
 
@@ -65,28 +76,28 @@ const ListMahasiswa = () => {
     <CardContainer>
       <Modal
         title="Update List data"
-        open={isModalOpen}
+        open={isModalOpenUpdate}
         onOk={handleUpdate}
-        onCancel={handleCancel}
+        onCancel={handleCancelUpdate}
       >
         <FormMahasiswa form={form} />
       </Modal>
       <Modal
         title="Add List data"
-        open={isModalOpen}
+        open={isModalOpenAdd}
         onOk={handleAdd}
-        onCancel={handleCancel}
+        onCancel={handleCancelAdd}
       >
         <FormMahasiswa form={form} />
       </Modal>
       <div className="flex justify-between items-center">
         <InputSearch placeholder="cari data" setState={setSearchData} />
-        <Button type="primary" className="font-medium" onClick={onOpen}>
+        <Button type="primary" className="font-medium" onClick={onOpenAdd}>
           + Tambah
         </Button>
       </div>
 
-      <TableMahasiswa data={searchFilter} onOpen={onOpen} />
+      <TableMahasiswa data={searchFilter} onOpen={onOpenUpdate} />
     </CardContainer>
   );
 };

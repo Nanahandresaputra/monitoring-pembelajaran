@@ -23,7 +23,8 @@ const Kelas = () => {
 
   const [form] = Form.useForm();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
 
   const handleUpdate = () => {
     form.submit();
@@ -31,7 +32,7 @@ const Kelas = () => {
       .validateFields()
       .then((res) => {
         console.log(res);
-        setIsModalOpen(false);
+        setIsModalOpenUpdate(false);
         form.resetFields();
       })
       .catch((err) => console.log(err));
@@ -43,19 +44,29 @@ const Kelas = () => {
       .validateFields()
       .then((res) => {
         console.log(res);
-        setIsModalOpen(false);
+        setIsModalOpenAdd(false);
         form.resetFields();
       })
       .catch((err) => console.log(err));
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
+  const handleCancelUpdate = () => {
+    setIsModalOpenUpdate(false);
     form.resetFields();
   };
 
-  const onOpen = () => {
-    setIsModalOpen(true);
+  const onOpenUpdate = () => {
+    setIsModalOpenUpdate(true);
+    form.setFieldsValue({ status: 0 });
+  };
+
+  const handleCancelAdd = () => {
+    setIsModalOpenAdd(false);
+    form.resetFields();
+  };
+
+  const onOpenAdd = () => {
+    setIsModalOpenAdd(true);
     form.setFieldsValue({ status: 0 });
   };
 
@@ -84,17 +95,17 @@ const Kelas = () => {
     <section className="grid grid-cols-9 gap-x-4">
       <Modal
         title="Update List data"
-        open={isModalOpen}
+        open={isModalOpenUpdate}
         onOk={handleUpdate}
-        onCancel={handleCancel}
+        onCancel={handleCancelUpdate}
       >
         <FormKelas form={form} />
       </Modal>
       <Modal
         title="Add List data"
-        open={isModalOpen}
+        open={isModalOpenAdd}
         onOk={handleAdd}
-        onCancel={handleCancel}
+        onCancel={handleCancelAdd}
       >
         <FormKelas form={form} />
       </Modal>
@@ -102,12 +113,12 @@ const Kelas = () => {
         <CardContainer>
           <div className="flex justify-between items-center">
             <InputSearch placeholder="cari data" setState={setSearchData} />
-            <Button type="primary" className="font-medium" onClick={onOpen}>
+            <Button type="primary" className="font-medium" onClick={onOpenAdd}>
               + Tambah
             </Button>
           </div>
 
-          <TableKelas data={searchFilter} onOpen={onOpen} />
+          <TableKelas data={searchFilter} onOpen={onOpenUpdate} />
         </CardContainer>
       </div>
       <div className="col-span-4">
