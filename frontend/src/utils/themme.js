@@ -46,5 +46,10 @@ export const themme = {
       optionSelectedBg: "#fff1f0",
       optionActiveBg: "#fff1f0",
     },
+    TimePicker: {
+      activeBorderColor: "rgb(245, 34, 45)",
+      hoverBorderColor: "rgb(253, 68, 78)",
+      colorPrimaryHover: "rgb(252, 95, 103)",
+    },
   },
 };

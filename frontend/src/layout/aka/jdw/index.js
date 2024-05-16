@@ -118,12 +118,12 @@ const Jdw = () => {
 
       <div className="flex justify-between items-center">
         <InputSearch placeholder="cari data" setState={setSearchData} />
-        <Button type="primary" className="font-medium">
+        <Button type="primary" className="font-medium" onClick={onOpenAdd}>
           + Tambah
         </Button>
       </div>
 
-      <TableJdw data={searchFilter} />
+      <TableJdw data={searchFilter} onOpenUpdate={onOpenUpdate} />
     </CardContainer>
   );
 };

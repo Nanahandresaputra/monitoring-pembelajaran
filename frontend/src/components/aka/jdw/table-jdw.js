@@ -2,7 +2,7 @@ import { Button, Popconfirm, Table, Tag } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableJdw = ({ data }) => {
+const TableJdw = ({ data, onOpenUpdate }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
   const filterTest = [...new Set(data.map((datas) => datas.test))].map(
@@ -51,7 +51,7 @@ const TableJdw = ({ data }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary">
+            <Button type="primary" onClick={onOpenUpdate}>
               <FaEdit />
             </Button>
             <Popconfirm
