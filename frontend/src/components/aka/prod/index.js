@@ -2,7 +2,7 @@ import { Button, Popconfirm, Table } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableProd = ({ data }) => {
+const TableProd = ({ data, onOpenUpdate }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
   const filterFax = [...new Set(data.map((datas) => datas.fax))].map((fax) => ({
@@ -31,7 +31,7 @@ const TableProd = ({ data }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary">
+            <Button type="primary" onClick={onOpenUpdate}>
               <FaEdit />
             </Button>
             <Popconfirm

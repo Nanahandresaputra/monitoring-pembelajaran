@@ -30,23 +30,18 @@ const TableAdmin = ({ data }) => {
       width: 200,
       render: (_, record) => {
         return (
-          <div className="flex items-center space-x-5">
-            <Button type="primary">
-              <FaEdit />
+          <Popconfirm
+            title="Hapus data"
+            description="Apakah yakin ingin menghapus data ini?"
+            onConfirm={() => console.log("confirm")}
+            onCancel={() => console.log("cancel")}
+            okText="Ya"
+            cancelText="Tidak"
+          >
+            <Button>
+              <FaRegTrashAlt />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
-              <Button>
-                <FaRegTrashAlt />
-              </Button>
-            </Popconfirm>
-          </div>
+          </Popconfirm>
         );
       },
     },

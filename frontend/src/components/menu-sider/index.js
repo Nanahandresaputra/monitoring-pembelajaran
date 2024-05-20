@@ -1,11 +1,12 @@
-import { Avatar, Badge, Button, Dropdown, Menu } from "antd";
-import React from "react";
+import { Avatar, Badge, Button, Dropdown, Form, Menu, Modal } from "antd";
+import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { HiDocumentText } from "react-icons/hi";
 import { MdDashboardCustomize } from "react-icons/md";
 import logo from "../../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { FaPenToSquare } from "react-icons/fa6";
+import FormAdmin from "../admin/form-admin";
 
 const MenuSider = ({ collapsed, selection }) => {
   const navigate = useNavigate();
@@ -44,6 +45,32 @@ const MenuSider = ({ collapsed, selection }) => {
     getItem("Admin", "Admin", <MdDashboardCustomize />),
   ];
 
+  const [form] = Form.useForm();
+
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+
+  const handleUpdate = () => {
+    form.submit();
+    form
+      .validateFields()
+      .then((res) => {
+        console.log(res);
+        setIsModalOpenUpdate(false);
+        form.resetFields();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleCancelUpdate = () => {
+    setIsModalOpenUpdate(false);
+    form.resetFields();
+  };
+
+  const onOpenUpdate = () => {
+    setIsModalOpenUpdate(true);
+    form.setFieldsValue({ status: 0 });
+  };
+
   const dropdownItems = [
     {
       key: 1,
@@ -51,7 +78,7 @@ const MenuSider = ({ collapsed, selection }) => {
       label: (
         <p className="cursor-pointer text-sm flex items-center space-x-2">
           <span>Admin hendro sutrisno</span>
-          <FaPenToSquare className="text-gray-400" />
+          <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} />
         </p>
       ),
     },
@@ -68,6 +95,14 @@ const MenuSider = ({ collapsed, selection }) => {
   //<p></p>
   return (
     <section className="h-full flex flex-col relative">
+      <Modal
+        title="Add data 1"
+        open={isModalOpenUpdate}
+        onOk={handleUpdate}
+        onCancel={handleCancelUpdate}
+      >
+        <FormAdmin form={form} />
+      </Modal>
       <div className="flex items-center my-[4vh] mx-2">
         <img
           src={logo}
@@ -95,7 +130,7 @@ const MenuSider = ({ collapsed, selection }) => {
             </Badge>
             <p className="cursor-pointer flex items-center space-x-1 font-medium">
               <span>Admin hendro sutrisno</span>
-              <FaPenToSquare className="text-gray-400" />
+              <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} />
             </p>
 
             <Button type="primary" size="small">
