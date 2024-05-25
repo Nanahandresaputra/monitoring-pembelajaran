@@ -26,13 +26,13 @@ function App() {
           }
         >
           <Route path="" element={<Dashboard />} />
-          <Route path="/Data-1" element={<Dosen />} />
-          <Route path="/List-Data" element={<ListMahasiswa />} />
-          <Route path="/Data-M2" element={<Kelas />} />
-          <Route path="/Data-Ak1" element={<Jdw />} />
-          <Route path="/Data-Ak2" element={<Faxu />} />
-          <Route path="/Data-Ak3" element={<Prod />} />
-          <Route path="/Data-Ak4" element={<MK />} />
+          <Route path="/Dosen" element={<Dosen />} />
+          <Route path="/List-Mahasiswa" element={<ListMahasiswa />} />
+          <Route path="/Kelas" element={<Kelas />} />
+          <Route path="/Jadwal" element={<Jdw />} />
+          <Route path="/Fakultas" element={<Faxu />} />
+          <Route path="/Program-Studi" element={<Prod />} />
+          <Route path="/Mata-Kuliah" element={<MK />} />
           <Route path="/Admin" element={<DataAdmin />} />
         </Route>
         <Route path="/login" element={<Login />} />

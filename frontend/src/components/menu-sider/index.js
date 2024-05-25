@@ -6,6 +6,8 @@ import { MdDashboardCustomize } from "react-icons/md";
 import logo from "../../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { FaPenToSquare } from "react-icons/fa6";
+import { LiaChalkboardTeacherSolid } from "react-icons/lia";
+
 import FormAdmin from "../admin/form-admin";
 
 const MenuSider = ({ collapsed, selection }) => {
@@ -31,17 +33,9 @@ const MenuSider = ({ collapsed, selection }) => {
   }
   const items = [
     getItem("Dashboard", "Dashboard", <MdDashboardCustomize />),
-    getItem("Data 1", "Data-1", <MdDashboardCustomize />),
-    getItem("Data M", "Data-M", <HiDocumentText />, [
-      getItem("List Data", "List-Data"),
-      getItem("Data M2 ", "Data-M2"),
-    ]),
-    getItem("Data AK", "Data-AK", <FaUser />, [
-      getItem("Data Ak1", "Data-Ak1"),
-      getItem("Data Ak2", "Data-Ak2"),
-      getItem("Data Ak3", "Data-Ak3"),
-      getItem("Data Ak4", "Data-Ak4"),
-    ]),
+    getItem("Dosen", "Dosen", <LiaChalkboardTeacherSolid />),
+    getItem("Mahasiswa", "Mahasiswa", <HiDocumentText />, [getItem("List Mahasiswa", "List-Mahasiswa"), getItem("Kelas ", "Kelas")]),
+    getItem("Akademik", "Akademik", <FaUser />, [getItem("Jadwal", "Jadwal"), getItem("Fakultas", "Fakultas"), getItem("Program Studi", "Program-Studi"), getItem("Mata Kuliah", "Mata-Kuliah")]),
     getItem("Admin", "Admin", <MdDashboardCustomize />),
   ];
 
@@ -95,31 +89,15 @@ const MenuSider = ({ collapsed, selection }) => {
   //<p></p>
   return (
     <section className="h-full flex flex-col relative">
-      <Modal
-        title="Add data 1"
-        open={isModalOpenUpdate}
-        onOk={handleUpdate}
-        onCancel={handleCancelUpdate}
-      >
+      <Modal title="Add data 1" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
         <FormAdmin form={form} />
       </Modal>
       <div className="flex items-center my-[4vh] mx-2">
-        <img
-          src={logo}
-          alt="logo"
-          className="w-[4vw] object-contain bg-white rounded-xl"
-        />
-        <h3 className={collapsed ? "hidden" : "text-xl ms-3 font-semibold"}>
-          INI LOGO
-        </h3>
+        <img src={logo} alt="logo" className="w-[4vw] object-contain bg-white rounded-xl" />
+        <h3 className={collapsed ? "hidden" : "text-xl ms-3 font-semibold"}>INI LOGO</h3>
       </div>
       <div className="flex flex-col justify-between flex-1">
-        <Menu
-          defaultSelectedKeys={["Dashboard"]}
-          selectedKeys={[selection]}
-          mode="inline"
-          items={items}
-        />
+        <Menu defaultSelectedKeys={["Dashboard"]} selectedKeys={[selection]} mode="inline" items={items} />
 
         {!collapsed ? (
           <div className="w-full pb-8 flex flex-col space-y-3 items-center border-b border-gray-300">

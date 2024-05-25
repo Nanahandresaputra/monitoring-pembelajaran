@@ -1,23 +1,8 @@
 import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const options = {
   maintainAspectRatio: false,
@@ -46,9 +31,7 @@ const data = {
   datasets: [
     {
       label: "Dataset 1",
-      data: new Array(12)
-        .fill()
-        .map((_, index) => Math.floor(Math.random(index) * 900)),
+      data: new Array(12).fill().map((_, index) => Math.floor(Math.random(index) * 900)),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgb(239 68 68)",
     },
@@ -58,7 +41,7 @@ const data = {
 const BarChart = () => {
   return (
     <section className="w-full h-[50vh] flex flex-col bg-white space-y-8 rounded-md drop-shadow-lg shadow-lg items-center pt-[3.5vh]">
-      <h3 className="text-xl font-semibold">Chart Data Satu</h3>
+      <h3 className="text-xl font-semibold">Bagan Mahasiswa</h3>
       <div className="w-11/12 h-[35vh]">
         <Bar options={options} data={data} />
       </div>
