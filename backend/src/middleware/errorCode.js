@@ -45,6 +45,11 @@ const errorCode = (errCode, key, data) => {
       errorCode: errCode,
       message: "token expired",
     };
+  } else if (errCode === 9008) {
+    return {
+      errorCode: errCode,
+      message: "Cant delete this data",
+    };
   }
 };
 

@@ -6,11 +6,11 @@ const errorCode = require("../../middleware/errorCode");
 const getKelas = async (req, res, next) => {
   try {
     let kelas = await db.query(`select k.id, k.kelas, f.fakultas from kelas k join fakultas f on k.fakultas_id = f.id `);
-    if (kelas.rowCount < 1) {
-      return res.json(errorCode(9001));
-    } else {
-      return res.json(errorCode(1000, "data", kelas.rows));
-    }
+    // if (kelas.rowCount < 1) {
+    //   return res.json(errorCode(9001));
+    // } else {
+    return res.json(errorCode(1000, "data", kelas.rows));
+    // }
   } catch (err) {
     return res.json(errorCode(9002));
   }
@@ -23,7 +23,7 @@ const getKelasDetail = async (req, res, next) => {
   try {
     let kelasMhs = await db.query(`select m.nama, m.nim, m.status from mahasiswa m where m.kelas_id = ${id}`);
     let kelasJdwl = await db.query(`select d.nama as pengampu, mk.matkul, jd.jam, jd.hari from jadwal_dosen jd join matkul mk on jd.matkul_id = mk.id 
-    join dosen d on jd.dosen_id = d.id where jd.kelas_id = ${id}`);
+    join dosen d on jd.dosen_id = d.id where jd.kelas_id = ${id} and d.status = 1`);
 
     let detailKelas = {
       mahasiswa: kelasMhs.rows,
@@ -87,7 +87,11 @@ const deleteKelas = async (req, res, next) => {
       return res.json(errorCode(1000));
     }
   } catch (err) {
-    return res.json(errorCode(9002));
+    if (`${err.message}`.includes("violates foreign key constraint")) {
+      return res.json(errorCode(9008));
+    } else {
+      return res.json(errorCode(9002));
+    }
   }
 };
 

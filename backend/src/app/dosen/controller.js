@@ -6,11 +6,11 @@ const errorCode = require("../../middleware/errorCode");
 const getDosen = async (req, res, next) => {
   try {
     let dosen = await db.query(`select * from dosen`);
-    if (dosen.rowCount < 1) {
-      return res.json(errorCode(9001));
-    } else {
-      return res.json(errorCode(1000, "data", dosen.rows));
-    }
+    // if (dosen.rowCount < 1) {
+    //   return res.json(errorCode(9001));
+    // } else {
+    return res.json(errorCode(1000, "data", dosen.rows));
+    // }
   } catch (err) {
     return res.json(errorCode(9002));
   }
@@ -25,18 +25,18 @@ const getDosenDetail = async (req, res, next) => {
     let dosenJadwal = await db.query(`select k.kelas, mk.matkul, jd.jam, jd.hari 
     from jadwal_dosen jd join dosen d on jd.dosen_id = d.id join matkul mk on jd.matkul_id = mk.id
     join kelas k on jd.kelas_id = k.id where d.id = ${id}`);
-    if (dosenData.rowCount < 1) {
-      return res.json(errorCode(9001));
-    } else {
-      let detailDosen = {
-        nama: dosenData.rows[0].nama,
-        nidn: dosenData.rows[0].nidn,
-        status: dosenData.rows[0].status,
-        jadwal: dosenJadwal.rows,
-      };
+    // if (dosenData.rowCount < 1) {
+    //   return res.json(errorCode(9001));
+    // } else {
+    let detailDosen = {
+      nama: dosenData.rows[0].nama,
+      nidn: dosenData.rows[0].nidn,
+      status: dosenData.rows[0].status,
+      jadwal: dosenJadwal.rows,
+    };
 
-      return res.json(errorCode(1000, "data", detailDosen));
-    }
+    return res.json(errorCode(1000, "data", detailDosen));
+    // }
   } catch (err) {
     return res.json(errorCode(9002));
   }
@@ -94,7 +94,11 @@ const deleteDosen = async (req, res, next) => {
       return res.json(errorCode(1000));
     }
   } catch (err) {
-    return res.json(errorCode(9002));
+    if (`${err.message}`.includes("violates foreign key constraint")) {
+      return res.json(errorCode(9008));
+    } else {
+      return res.json(errorCode(9002));
+    }
   }
 };
 

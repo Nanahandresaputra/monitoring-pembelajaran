@@ -5,12 +5,12 @@ const { maskingPwd } = require("../../utils/encrypt.js");
 //=================================== GET USER ===============================
 const getUsers = async (req, res, next) => {
   try {
-    let users = await db.query(`select id, nama, username from useradmin`);
-    if (users.rowCount < 1) {
-      return res.json(errorCode(9001));
-    } else {
-      return res.json(errorCode(1000, "users", users.rows));
-    }
+    let users = await db.query(`select id, nama, username, password, status from useradmin`);
+    // if (users.rowCount < 1) {
+    //   return res.json(errorCode(9001));
+    // } else {
+    return res.json(errorCode(1000, "users", users.rows));
+    // }
   } catch (err) {
     return res.json(errorCode(9002));
   }
@@ -18,9 +18,9 @@ const getUsers = async (req, res, next) => {
 
 //=================================== ADD USER ===============================
 const addUser = async (req, res, next) => {
-  const { nama, username, password } = req.body;
+  const { nama, username, password, status } = req.body;
   try {
-    await db.query(`insert into useradmin (nama, username, password) values ('${nama}', '${username}', '${maskingPwd(password)}')`);
+    await db.query(`insert into useradmin (nama, username, password, status) values ('${nama}', '${username}', '${maskingPwd(password)}', '${status}')`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {
@@ -33,14 +33,14 @@ const addUser = async (req, res, next) => {
 
 //=================================== UPDATE USER ===============================
 const updateUser = async (req, res, next) => {
-  let { nama, username, password } = req.body;
+  let { nama, username, password, status } = req.body;
   const { id } = req.params;
   try {
     let users = await db.query(`select * from useradmin where useradmin.id = ${id}`);
     if (users.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
-      await db.query(`update useradmin set nama = '${nama}', username = '${username}', password = '${maskingPwd(password)}' where useradmin.id = ${id}`);
+      await db.query(`update useradmin set nama = '${nama}', username = '${username}', password = '${maskingPwd(password)}', status = '${status}' where useradmin.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {
@@ -65,7 +65,11 @@ const deleteUser = async (req, res, next) => {
       return res.json(errorCode(1000));
     }
   } catch (err) {
-    return res.json(errorCode(9002));
+    if (`${err.message}`.includes("violates foreign key constraint")) {
+      return res.json(errorCode(9008));
+    } else {
+      return res.json(errorCode(9002));
+    }
   }
 };
 

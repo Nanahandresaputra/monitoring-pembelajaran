@@ -10,8 +10,8 @@ export const themme = {
       itemActiveBg: "rgb(255, 255, 255)",
       itemHoverBg: "#fff1f0",
       itemHoverColor: "rgba(255, 1, 1, 0.88)",
-      itemSelectedColor: "white",
-      itemSelectedBg: "#a8071a",
+      itemSelectedColor: "#a8071a",
+      itemSelectedBg: "#fff1f0",
     },
     Button: {
       colorPrimaryBorder: "rgb(255, 146, 152)",

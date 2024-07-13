@@ -6,11 +6,11 @@ const errorCode = require("../../middleware/errorCode");
 const getFakultas = async (req, res, next) => {
   try {
     let fakultas = await db.query(`select * from fakultas`);
-    if (fakultas.rowCount < 1) {
-      return res.json(errorCode(9001));
-    } else {
-      return res.json(errorCode(1000, "data", fakultas.rows));
-    }
+    // if (fakultas.rowCount < 1) {
+    //   return res.json(errorCode(9001));
+    // } else {
+    return res.json(errorCode(1000, "data", fakultas.rows));
+    // }
   } catch (err) {
     return res.json(errorCode(9002));
   }
@@ -67,7 +67,11 @@ const deleteFakultas = async (req, res, next) => {
       return res.json(errorCode(1000));
     }
   } catch (err) {
-    return res.json(errorCode(9002));
+    if (`${err.message}`.includes("violates foreign key constraint")) {
+      return res.json(errorCode(9008));
+    } else {
+      return res.json(errorCode(9002));
+    }
   }
 };
 

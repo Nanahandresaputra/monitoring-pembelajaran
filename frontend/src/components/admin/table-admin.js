@@ -20,6 +20,7 @@ const TableAdmin = ({ data, handleDelete }) => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: "10rem",
       filters: [
         { text: "Aktif", value: 1 },
         { text: "Tidak Aktif", value: 0 },
@@ -41,21 +42,21 @@ const TableAdmin = ({ data, handleDelete }) => {
         }
       },
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      width: 200,
-      render: (_, record) => {
-        return (
-          <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
-            <Button>
-              <FaRegTrashAlt />
-            </Button>
-          </Popconfirm>
-        );
-      },
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "action",
+    //   key: "action",
+    //   width: 200,
+    //   render: (_, record) => {
+    //     return (
+    //       <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
+    //         <Button>
+    //           <FaRegTrashAlt />
+    //         </Button>
+    //       </Popconfirm>
+    //     );
+    //   },
+    // },
   ];
   return (
     <Table

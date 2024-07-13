@@ -41,26 +41,26 @@ const TableDataDsn = ({ data, onOpen, getDosenDetail, setGetId, handleDelete }) 
         }
       },
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      width: 200,
-      render: (_, record) => {
-        return (
-          <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={() => onOpen(record.key)}>
-              <FaEdit />
-            </Button>
-            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
-              <Button>
-                <FaRegTrashAlt />
-              </Button>
-            </Popconfirm>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "action",
+    //   key: "action",
+    //   width: 200,
+    //   render: (_, record) => {
+    //     return (
+    //       <div className="flex items-center space-x-5">
+    //         <Button type="primary" onClick={() => onOpen(record.key)}>
+    //           <FaEdit />
+    //         </Button>
+    //         <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
+    //           <Button>
+    //             <FaRegTrashAlt />
+    //           </Button>
+    //         </Popconfirm>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
   return (
     <Table
