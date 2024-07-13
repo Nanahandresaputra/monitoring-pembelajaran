@@ -8,7 +8,7 @@ import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 
 import FormAdmin from "../admin/form-admin";
 import { logoUmc } from "../../assets";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutAuth } from "../../store/action/auth";
 import { openNotifications } from "../../utils/notification";
 import { unmaskPwd } from "../../utils/encrypt";
@@ -16,6 +16,8 @@ import { getAdminAction, updateAdminAction } from "../../store/action/user-admin
 
 const MenuSider = ({ collapsed, selection, userData }) => {
   let userProfile = JSON.parse(localStorage.getItem("user")) || userData;
+
+  const { loadingPost } = useSelector((state) => state.loadingData);
 
   const navigate = useNavigate();
   function getItem(label, key, icon, children) {
@@ -46,6 +48,10 @@ const MenuSider = ({ collapsed, selection, userData }) => {
 
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
 
+  const getAdmin = () => {
+    dispatch(getAdminAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
   const handleUpdate = () => {
     form.submit();
     form
@@ -57,6 +63,7 @@ const MenuSider = ({ collapsed, selection, userData }) => {
             openNotifications(result.errorCode, result.message);
             setIsModalOpenUpdate(false);
             form.resetFields();
+            getAdmin();
           })
           .catch((err) => openNotifications(err.errorCode, err.message));
       })
@@ -114,7 +121,7 @@ const MenuSider = ({ collapsed, selection, userData }) => {
 
   return (
     <section className="h-full flex flex-col relative">
-      <Modal title="Add data 1" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Add data 1" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormAdmin form={form} />
       </Modal>
       <div className="flex flex-col space-y-4 justify-center items-center my-[4vh] mx-2">
