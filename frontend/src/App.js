@@ -20,9 +20,9 @@ function App() {
         <Route
           path="/"
           element={
-            // <PrivateRouter>
-            <OutletPage />
-            // </PrivateRouter>
+            <PrivateRouter>
+              <OutletPage />
+            </PrivateRouter>
           }
         >
           <Route path="" element={<Dashboard />} />

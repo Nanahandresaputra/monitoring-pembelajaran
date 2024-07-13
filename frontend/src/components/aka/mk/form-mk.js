@@ -3,13 +3,9 @@ import React from "react";
 
 const FormMk = ({ form }) => {
   return (
-    <Form layout="vertical" form={form} className="w-full">
-      <Form.Item
-        name="mk"
-        label="Mk"
-        rules={[{ required: true, message: "masukan mk" }]}
-      >
-        <Input />
+    <Form layout="vertical" form={form} className="w-full" autoComplete="off">
+      <Form.Item name="matkul" label="Mata Kuliah" rules={[{ required: true, message: "masukan mata kuliah" }]}>
+        <Input placeholder="mata kuliah" />
       </Form.Item>
     </Form>
   );

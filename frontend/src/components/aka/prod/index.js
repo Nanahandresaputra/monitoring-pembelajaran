@@ -2,26 +2,26 @@ import { Button, Popconfirm, Table } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableProd = ({ data, onOpenUpdate }) => {
+const TableProd = ({ data, onOpenUpdate, setGetId, handleDelete }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
-  const filterFax = [...new Set(data.map((datas) => datas.fax))].map((fax) => ({
-    text: fax,
-    value: fax,
+  const filterFax = [...new Set(data.map((datas) => datas.fakultas))].map((fak) => ({
+    text: fak,
+    value: fak,
   }));
 
   const columns = [
     {
-      title: "Prod",
-      dataIndex: "prod",
-      key: "prod",
+      title: "Program Studi",
+      dataIndex: "prodi",
+      key: "prodi",
     },
     {
-      title: "Fax",
-      dataIndex: "fax",
-      key: "fax",
+      title: "Fakultas",
+      dataIndex: "fakultas",
+      key: "fakultas",
       filters: filterFax,
-      onFilter: (value, record) => record.fax === value,
+      onFilter: (value, record) => record.fakultas === value,
     },
     {
       title: "Action",
@@ -31,17 +31,10 @@ const TableProd = ({ data, onOpenUpdate }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={onOpenUpdate}>
+            <Button type="primary" onClick={() => onOpenUpdate(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
+            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
@@ -56,12 +49,11 @@ const TableProd = ({ data, onOpenUpdate }) => {
     <Table
       columns={columns}
       dataSource={data}
-      rowClassName={(record, index) =>
-        record.key === selectedRow && "bg-[#fafafa]"
-      }
+      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
       onRow={(record) => {
         return {
           onClick: () => {
+            setGetId(record.key);
             setSelectedRow(record.key);
           },
         };

@@ -24,21 +24,19 @@ const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const BarChart = ({ value }) => {
+  const data = {
+    labels: value?.map((data) => data.fakultas),
+    datasets: [
+      {
+        label: "Mahasiswa",
+        data: value?.map((data) => data.total),
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgb(239 68 68)",
+      },
+    ],
+  };
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: new Array(12).fill().map((_, index) => Math.floor(Math.random(index) * 900)),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgb(239 68 68)",
-    },
-  ],
-};
-
-const BarChart = () => {
   return (
     <section className="w-full h-[50vh] flex flex-col bg-white space-y-8 rounded-md drop-shadow-lg shadow-lg items-center pt-[3.5vh]">
       <h3 className="text-xl font-semibold">Bagan Mahasiswa</h3>

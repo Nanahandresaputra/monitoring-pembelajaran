@@ -3,18 +3,21 @@ import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { HiDocumentText } from "react-icons/hi";
 import { MdDashboardCustomize } from "react-icons/md";
-import logo from "../../assets/logo.svg";
 import { useNavigate } from "react-router-dom";
-import { FaPenToSquare } from "react-icons/fa6";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 
 import FormAdmin from "../admin/form-admin";
+import { logoUmc } from "../../assets";
+import { useDispatch } from "react-redux";
+import { logoutAuth } from "../../store/action/auth";
+import { openNotifications } from "../../utils/notification";
+import { unmaskPwd } from "../../utils/encrypt";
+import { getAdminAction, updateAdminAction } from "../../store/action/user-admin";
 
-const MenuSider = ({ collapsed, selection }) => {
+const MenuSider = ({ collapsed, selection, userData }) => {
+  let userProfile = JSON.parse(localStorage.getItem("user")) || userData;
+
   const navigate = useNavigate();
-
-  console.log(selection);
-
   function getItem(label, key, icon, children) {
     let item = {
       label,
@@ -48,9 +51,14 @@ const MenuSider = ({ collapsed, selection }) => {
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        setIsModalOpenUpdate(false);
-        form.resetFields();
+        dispatch(updateAdminAction(res, userData.id))
+          .then((result) => {
+            localStorage.setItem("user", JSON.stringify({ id: userData.id, admin: res.nama }));
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenUpdate(false);
+            form.resetFields();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -61,8 +69,14 @@ const MenuSider = ({ collapsed, selection }) => {
   };
 
   const onOpenUpdate = () => {
+    dispatch(getAdminAction())
+      .then((res) => {
+        let initialData = res.users?.find((data) => data.id === userData.id);
+        form.setFieldsValue({ ...initialData, password: unmaskPwd(initialData.password) });
+      })
+      .catch((err) => openNotifications(err.errorCode, err.message));
+
     setIsModalOpenUpdate(true);
-    form.setFieldsValue({ status: 0 });
   };
 
   const dropdownItems = [
@@ -71,8 +85,8 @@ const MenuSider = ({ collapsed, selection }) => {
       title: "",
       label: (
         <p className="cursor-pointer text-sm flex items-center space-x-2">
-          <span>Admin hendro sutrisno</span>
-          <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} />
+          <span>{userProfile.admin}</span>
+          {/* <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} /> */}
         </p>
       ),
     },
@@ -86,15 +100,26 @@ const MenuSider = ({ collapsed, selection }) => {
       ),
     },
   ];
-  //<p></p>
+
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutAuth())
+      .then((result) => {
+        localStorage.clear();
+        navigate("/login");
+      })
+      .catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
   return (
     <section className="h-full flex flex-col relative">
       <Modal title="Add data 1" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
         <FormAdmin form={form} />
       </Modal>
-      <div className="flex items-center my-[4vh] mx-2">
-        <img src={logo} alt="logo" className="w-[4vw] object-contain bg-white rounded-xl" />
-        <h3 className={collapsed ? "hidden" : "text-xl ms-3 font-semibold"}>INI LOGO</h3>
+      <div className="flex flex-col space-y-4 justify-center items-center my-[4vh] mx-2">
+        <img src={logoUmc} alt="logo" className="w-[5vw] object-contain bg-white rounded-xl" />
+        <h3 className={collapsed ? "hidden" : "font-bold text-center"}>Universitas Muhammadiyah Cirebon</h3>
       </div>
       <div className="flex flex-col justify-between flex-1">
         <Menu defaultSelectedKeys={["Dashboard"]} selectedKeys={[selection]} mode="inline" items={items} />
@@ -102,16 +127,16 @@ const MenuSider = ({ collapsed, selection }) => {
         {!collapsed ? (
           <div className="w-full pb-8 flex flex-col space-y-3 items-center border-b border-gray-300">
             <Badge color="green" dot offset={[-2, 8]} size="large">
-              <Avatar size="large" className="bg-red-300 text-red-500">
-                A
+              <Avatar size="large" className="bg-red-300 text-red-500 cursor-pointer" onClick={onOpenUpdate}>
+                {`${userProfile.admin}`.charAt(0).toUpperCase()}
               </Avatar>
             </Badge>
-            <p className="cursor-pointer flex items-center space-x-1 font-medium">
-              <span>Admin hendro sutrisno</span>
-              <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} />
+            <p className="flex items-center space-x-1 font-semibold">
+              <span>{userProfile.admin}</span>
+              {/* <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} /> */}
             </p>
 
-            <Button type="primary" size="small">
+            <Button type="primary" onClick={handleLogout}>
               Logout
             </Button>
           </div>
@@ -124,8 +149,8 @@ const MenuSider = ({ collapsed, selection }) => {
               }}
             >
               <Badge color="green" dot offset={[-2, 8]} size="large">
-                <Avatar size="large" className="bg-red-300 text-red-500">
-                  A
+                <Avatar size="large" className="bg-red-300 text-red-500 cursor-pointer" onClick={onOpenUpdate}>
+                  {`${userProfile.admin}`.charAt(0).toUpperCase()}
                 </Avatar>
               </Badge>
             </Dropdown>

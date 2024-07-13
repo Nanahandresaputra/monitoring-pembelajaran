@@ -1,21 +1,12 @@
 import { Table, Tag } from "antd";
 import React, { useState } from "react";
 
-const TablekelasMahasiswa = () => {
+const TablekelasMahasiswa = ({ mahasiswa }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
-  const data = new Array(25).fill().map((_, index) => ({
-    code: Math.floor(Math.random(index) * 98765),
-    nama: `nama ${index}`,
-    class: `TEST ${Math.floor(Math.random(index) * 4)}`,
-    prod: "Prod Test Information",
-    fax: "Test",
-    status: Math.floor(Math.random(index) * 2),
-  }));
-
-  const dataSource = data.map((datas, index) => ({
+  const dataSource = mahasiswa?.map((datas, index) => ({
     key: index,
-    code: datas.code,
+    nim: datas.nim,
     nama: datas.nama,
     status: datas.status,
     // action: datas.action,
@@ -23,9 +14,9 @@ const TablekelasMahasiswa = () => {
 
   const columns = [
     {
-      title: "Code",
-      dataIndex: "code",
-      key: "code",
+      title: "Nim",
+      dataIndex: "nim",
+      key: "nim",
     },
     {
       title: "Nama",

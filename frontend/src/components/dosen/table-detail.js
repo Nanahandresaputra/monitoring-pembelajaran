@@ -1,49 +1,41 @@
 import { Divider, Table } from "antd";
-import React from "react";
-
-const TableDetail = () => {
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-  const lorem = ["Lorem ipsum dolor", "sit amet", "consectetur adip", "condimentum erat nec", "consectetur erat", "Vestibulum ante ipsum primis in faucibus"];
-
-  const test = ["Test 1A", "Test 2A", "Test 3B", "Test 4A", "Test 5A"];
-
-  const data = new Array(12).fill().map((_, index) => ({
+const TableDetail = ({ data }) => {
+  const dataSource = data?.map((datas, index) => ({
     key: index,
-    test: test[Math.floor(Math.random(index) * test.length)],
-    lorem: lorem[Math.floor(Math.random(index) * lorem.length)],
-    day: days[Math.floor(Math.random(index) * days.length)],
-    time: "09.00 - 10.00",
+    kelas: datas.kelas,
+    matkul: datas.matkul,
+    hari: datas.hari,
+    jam: datas.jam,
   }));
 
   const columns = [
     {
-      title: "Test",
-      dataIndex: "test",
-      key: "test",
+      title: "Kelas",
+      dataIndex: "kelas",
+      key: "kelas",
     },
     {
-      title: "Lorem",
-      dataIndex: "lorem",
-      key: "lorem",
+      title: "Mata Kuliah",
+      dataIndex: "matkul",
+      key: "matkul",
     },
     {
-      title: "Day",
-      dataIndex: "day",
-      key: "day",
+      title: "Hari",
+      dataIndex: "hari",
+      key: "hari",
     },
     {
-      title: "Time",
-      dataIndex: "time",
-      key: "time",
+      title: "Jam",
+      dataIndex: "jam",
+      key: "jam",
     },
   ];
   return (
     <>
       <Divider>
-        <p className="font-normal">Datas Data1</p>
+        <p className="font-normal">Jadwal</p>
       </Divider>
-      <Table columns={columns} dataSource={data} pagination={{ pageSize: 8 }} />
+      <Table columns={columns} dataSource={dataSource} pagination={{ pageSize: 8 }} />
     </>
   );
 };

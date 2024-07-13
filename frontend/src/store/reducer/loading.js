@@ -1,8 +1,9 @@
-import { SET_LOADING, SET_LOADING_DETAIL } from "../action-types";
+import { SET_LOADING, SET_LOADING_DETAIL, SET_LOADING_POST } from "../action-types";
 
 let initialState = {
   loading: false,
   loadingDetail: false,
+  loadingPost: false,
 };
 
 const loadingReducer = (state = initialState, action) => {
@@ -11,6 +12,8 @@ const loadingReducer = (state = initialState, action) => {
       return { ...state, loading: action.payload };
     case SET_LOADING_DETAIL:
       return { ...state, loadingDetail: action.payload };
+    case SET_LOADING_POST:
+      return { ...state, loadingPost: action.payload };
 
     default:
       return state;

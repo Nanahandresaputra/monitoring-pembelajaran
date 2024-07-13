@@ -2,14 +2,14 @@ import { Button, Popconfirm, Table } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableMK = ({ data, onOpenUpdate }) => {
+const TableMK = ({ data, onOpenUpdate, setGetId, handleDelete }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
   const columns = [
     {
-      title: "Lorem Mk",
-      dataIndex: "lorem",
-      key: "lorem",
+      title: "Mata Kuliah",
+      dataIndex: "matkul",
+      key: "matkul",
     },
     {
       title: "Action",
@@ -19,17 +19,10 @@ const TableMK = ({ data, onOpenUpdate }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={onOpenUpdate}>
+            <Button type="primary" onClick={() => onOpenUpdate(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
+            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
@@ -44,12 +37,11 @@ const TableMK = ({ data, onOpenUpdate }) => {
     <Table
       columns={columns}
       dataSource={data}
-      rowClassName={(record, index) =>
-        record.key === selectedRow && "bg-[#fafafa]"
-      }
+      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
       onRow={(record) => {
         return {
           onClick: () => {
+            setGetId(record.key);
             setSelectedRow(record.key);
           },
         };

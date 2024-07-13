@@ -1,71 +1,41 @@
-import { Form, Input, Select, TimePicker } from "antd";
-import moment from "moment";
+import { Form, Select, TimePicker } from "antd";
 import React from "react";
 
-const FormJadwal = ({ form, data, days }) => {
-  const optionTest = [...new Set(data.map((datas) => datas.test))].map(
-    (test) => ({
-      value: test,
-      label: test,
-    })
-  );
+const FormJadwal = ({ form, days, kelas, dosen, matkul }) => {
+  let optionsKelas = kelas?.map((datas) => ({ value: datas.id, label: datas.kelas }));
+  let optionsMatkul = matkul?.map((datas) => ({ value: datas.id, label: datas.matkul }));
+  let optionsDosen = dosen?.filter((datas) => datas.status === 1)?.map((datas) => ({ value: datas.id, label: datas.nama }));
 
   const optionDay = days.map((datas) => ({
     value: datas,
     label: datas,
   }));
 
-  const format = "DD.MM.YYYY HH:mm";
-  const disabledDates = [
-    {
-      start: "23.02.2020 13:00",
-      end: "25.02.2020 15:00",
-    },
-    {
-      start: "15.03.2020 08:00",
-      end: "20.03.2020 17:00",
-    },
-  ];
-
   return (
-    <Form layout="vertical" form={form} className="grid grid-cols-2 gap-x-5">
-      <Form.Item
-        name="nama"
-        label="Nama"
-        rules={[{ required: true, message: "masukan nama" }]}
-      >
-        <Input />
+    <Form layout="vertical" form={form} className="grid grid-cols-2 gap-x-5" autoComplete="off">
+      <Form.Item name="dosen_id" label="Pengampu" rules={[{ required: true, message: "masukan nama dosen pengampu" }]}>
+        <Select placeholder="--- pilih pengampu ---" options={optionsDosen} />
+      </Form.Item>
+      <Form.Item name="matkul_id" label="Mata Kuliah" rules={[{ required: true, message: "masukan mata kuliah" }]}>
+        <Select placeholder="--- pilih matkul ---" options={optionsMatkul} />
+      </Form.Item>
+      <Form.Item name="kelas_id" label="Kelas" rules={[{ required: true, message: "kelas belum dipilih" }]}>
+        <Select placeholder="--- pilih kelas ---" options={optionsKelas} />
+      </Form.Item>
+      <Form.Item name="hari" label="Hari" rules={[{ required: true, message: "hari belum dipilih" }]}>
+        <Select placeholder="--- pilih hari ---" options={optionDay} />
       </Form.Item>
       <Form.Item
-        name="loerm"
-        label="Loerm"
-        rules={[{ required: true, message: "masukan loerm" }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="test"
-        label="Test"
-        rules={[{ required: true, message: "test belum dipilih" }]}
-      >
-        <Select options={optionTest} />
-      </Form.Item>
-      <Form.Item
-        name="day"
-        label="Day"
-        rules={[{ required: true, message: "day belum dipilih" }]}
-      >
-        <Select options={optionDay} />
-      </Form.Item>
-      <Form.Item
-        name="time"
-        label="Time"
-        rules={[{ required: true, message: "time belum dipilih" }]}
+        name="jam"
+        label="Jam"
+        rules={[{ required: true, message: "jam belum dipilih" }]}
         className="col-span-2"
+        // initialValue={[dayjs("13:00", "hh:mm"), dayjs("14:00", "hh:mm")]}
       >
         <TimePicker.RangePicker
           showSecond={false}
           className="w-full"
+
           // disabledTime={(number, type) => {
           //   return {
           //     disabledHours: () => {

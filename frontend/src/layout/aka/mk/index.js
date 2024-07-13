@@ -1,48 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "antd";
 import CardContainer from "../../../components/card-container";
 import InputSearch from "../../../components/input-search";
 import TableMK from "../../../components/aka/mk/table-mk";
 import FormMk from "../../../components/aka/mk/form-mk";
+import { useDispatch, useSelector } from "react-redux";
+import { openNotifications } from "../../../utils/notification";
+import { addMatkulAction, deleteMatkulAction, getMatkulAction, updateMatkulAction } from "../../../store/action/akademik";
 
 const MK = () => {
   const [searchData, setSearchData] = useState("");
+  const [getId, setGetId] = useState(-1);
 
-  const lorem = [
-    "Lorem ipsum dolor",
-    "sit amet",
-    "consectetur adip",
-    "condimentum erat nec",
-    "consectetur erat",
-    "Vestibulum ante ipsum primis in faucibus",
-    "Fusce sit amet rutrum augue",
-    "interdum",
-  ];
+  const { matkul } = useSelector((state) => state.akademik);
 
-  const data = lorem.map((datas, index) => ({
-    key: index,
-    lorem: datas,
+  const data = matkul.map((datas) => ({
+    key: datas.id,
+    matkul: datas.matkul,
   }));
 
-  let searchFilter = searchData
-    ? data.filter((datas) =>
-        `${datas.lorem}`.toUpperCase().includes(`${searchData}`.toUpperCase())
-      )
-    : data;
+  let searchFilter = searchData ? data.filter((datas) => `${datas.matkul}`.toUpperCase().includes(`${searchData}`.toUpperCase())) : data;
 
   const [form] = Form.useForm();
 
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const getMatkul = () => {
+    dispatch(getMatkulAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
   const handleUpdate = () => {
     form.submit();
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        isModalOpenUpdate(false);
-        form.resetFields();
+        dispatch(updateMatkulAction(res, getId))
+          .then((result) => {
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenUpdate(false);
+            form.resetFields();
+            getMatkul();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -52,9 +54,14 @@ const MK = () => {
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        setIsModalOpenAdd(false);
-        form.resetFields();
+        dispatch(addMatkulAction(res))
+          .then((result) => {
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenAdd(false);
+            form.resetFields();
+            getMatkul();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -69,42 +76,44 @@ const MK = () => {
     form.resetFields();
   };
 
-  const onOpenUpdate = () => {
+  const onOpenUpdate = (id) => {
     setIsModalOpenUpdate(true);
-    form.setFieldsValue({ status: 0 });
+    form.setFieldsValue(matkul.find((data) => data.id === id));
   };
 
   const onOpenAdd = () => {
     setIsModalOpenAdd(true);
-    form.setFieldsValue({ status: 0 });
   };
+
+  const handleDelete = (id) => {
+    dispatch(deleteMatkulAction(id))
+      .then((result) => {
+        openNotifications(result.errorCode, result.message);
+        getMatkul();
+      })
+      .catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
+  useEffect(() => {
+    getMatkul();
+  }, []);
 
   return (
     <CardContainer>
-      <Modal
-        title="Update data 1"
-        open={isModalOpenUpdate}
-        onOk={handleUpdate}
-        onCancel={handleCancelUpdate}
-      >
+      <Modal title="Edit Mata Kuliah" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
         <FormMk form={form} />
       </Modal>
-      <Modal
-        title="Add data 1"
-        open={isModalOpenAdd}
-        onOk={handleAdd}
-        onCancel={handleCancelAdd}
-      >
+      <Modal title="Tambah Mata Kuliah" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
         <FormMk form={form} />
       </Modal>
       <div className="flex justify-between items-center">
-        <InputSearch placeholder="cari data" setState={setSearchData} />
+        <InputSearch placeholder="cari mata kuliah" setState={setSearchData} />
         <Button type="primary" className="font-medium" onClick={onOpenAdd}>
           + Tambah
         </Button>
       </div>
 
-      <TableMK data={searchFilter} onOpenUpdate={onOpenUpdate} />
+      <TableMK data={searchFilter} onOpenUpdate={onOpenUpdate} setGetId={setGetId} handleDelete={handleDelete} />
     </CardContainer>
   );
 };

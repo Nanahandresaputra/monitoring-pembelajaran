@@ -1,24 +1,20 @@
 import { Button, Popconfirm, Table } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableKelas = ({ data, onOpen }) => {
-  const dataSource = data.map((datas, index) => ({
-    key: index,
-    class: datas.class,
-    fax: datas.fax,
-  }));
+const TableKelas = ({ data, onOpen, setGetId, handleDelete, getKelasDetail }) => {
+  const [selectedRow, setSelectedRow] = useState("");
 
   const columns = [
     {
-      title: "Class",
-      dataIndex: "class",
-      key: "class",
+      title: "Kelas",
+      dataIndex: "kelas",
+      key: "kelas",
     },
     {
-      title: "Fax",
-      dataIndex: "fax",
-      key: "fax",
+      title: "Fakultas",
+      dataIndex: "fakultas",
+      key: "fakultas",
     },
     {
       title: "Action",
@@ -28,17 +24,10 @@ const TableKelas = ({ data, onOpen }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={onOpen}>
+            <Button type="primary" onClick={() => onOpen(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
+            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
@@ -48,7 +37,22 @@ const TableKelas = ({ data, onOpen }) => {
       },
     },
   ];
-  return <Table columns={columns} dataSource={dataSource} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            getKelasDetail(record.key);
+            setGetId(record.key);
+            setSelectedRow(record.key);
+          },
+        };
+      }}
+    />
+  );
 };
 
 export default TableKelas;

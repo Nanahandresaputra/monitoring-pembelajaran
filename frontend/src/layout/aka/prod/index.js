@@ -1,48 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "antd";
 import CardContainer from "../../../components/card-container";
 import InputSearch from "../../../components/input-search";
 import TableProd from "../../../components/aka/prod";
 import FormProd from "../../../components/aka/prod/form-prod";
+import { useDispatch, useSelector } from "react-redux";
+import { addProdiAction, deleteProdiAction, getFakultasAction, getProdiAction, updateProdiAction } from "../../../store/action/akademik";
+import { openNotifications } from "../../../utils/notification";
 
 const Prod = () => {
+  const { prodi, fakultas } = useSelector((state) => state.akademik);
+  const [getId, setGetId] = useState(-1);
+
   const [searchData, setSearchData] = useState("");
 
-  const dataFax = [
-    "Test",
-    "Fake",
-    "Pending",
-    "Poll",
-    "Hongkong",
-    "Near",
-    "Sein",
-  ];
-
-  const data = new Array(12).fill().map((_, index) => ({
-    key: index,
-    prod: `Production data ${index}`,
-    fax: dataFax[Math.floor(Math.random(index) * dataFax.length)],
+  const data = prodi.map((datas) => ({
+    key: datas.id,
+    prodi: datas.prodi,
+    fakultas: datas.fakultas,
   }));
 
-  let searchFilter = searchData
-    ? data.filter((datas) =>
-        `${datas.prod}`.toUpperCase().includes(`${searchData}`.toUpperCase())
-      )
-    : data;
+  let searchFilter = searchData ? data.filter((datas) => `${datas.prodi}`.toUpperCase().includes(`${searchData}`.toUpperCase())) : data;
 
   const [form] = Form.useForm();
 
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const getProdi = () => {
+    dispatch(getProdiAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
+  const getFakultasData = () => {
+    dispatch(getFakultasAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
   const handleUpdate = () => {
     form.submit();
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        isModalOpenUpdate(false);
-        form.resetFields();
+        dispatch(updateProdiAction(res, getId))
+          .then((result) => {
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenUpdate(false);
+            form.resetFields();
+            getProdi();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -52,9 +59,14 @@ const Prod = () => {
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        setIsModalOpenAdd(false);
-        form.resetFields();
+        dispatch(addProdiAction(res))
+          .then((result) => {
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenAdd(false);
+            form.resetFields();
+            getProdi();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -69,42 +81,47 @@ const Prod = () => {
     form.resetFields();
   };
 
-  const onOpenUpdate = () => {
+  const onOpenUpdate = (id) => {
+    let initialValue = prodi?.find((data) => data.id === id);
+    form.setFieldsValue({ ...initialValue, fakultas_id: fakultas?.find((data) => data.fakultas === initialValue.fakultas).id });
+    getFakultasData();
     setIsModalOpenUpdate(true);
-    form.setFieldsValue({ status: 0 });
   };
 
   const onOpenAdd = () => {
+    getFakultasData();
     setIsModalOpenAdd(true);
-    form.setFieldsValue({ status: 0 });
   };
+
+  const handleDelete = (id) => {
+    dispatch(deleteProdiAction(id))
+      .then((result) => {
+        openNotifications(result.errorCode, result.message);
+        getProdi();
+      })
+      .catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
+  useEffect(() => {
+    getProdi();
+  }, []);
 
   return (
     <CardContainer>
-      <Modal
-        title="Update data 1"
-        open={isModalOpenUpdate}
-        onOk={handleUpdate}
-        onCancel={handleCancelUpdate}
-      >
-        <FormProd data={dataFax} form={form} />
+      <Modal title="Edit Program studi" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+        <FormProd data={fakultas} form={form} />
       </Modal>
-      <Modal
-        title="Add data 1"
-        open={isModalOpenAdd}
-        onOk={handleAdd}
-        onCancel={handleCancelAdd}
-      >
-        <FormProd data={dataFax} form={form} />
+      <Modal title="Tambah Program studi" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+        <FormProd data={fakultas} form={form} />
       </Modal>
       <div className="flex justify-between items-center">
-        <InputSearch placeholder="cari data" setState={setSearchData} />
+        <InputSearch placeholder="cari program studi" setState={setSearchData} />
         <Button type="primary" className="font-medium" onClick={onOpenAdd}>
           + Tambah
         </Button>
       </div>
 
-      <TableProd data={searchFilter} onOpenUpdate={onOpenUpdate} />
+      <TableProd data={searchFilter} onOpenUpdate={onOpenUpdate} handleDelete={handleDelete} setGetId={setGetId} />
     </CardContainer>
   );
 };

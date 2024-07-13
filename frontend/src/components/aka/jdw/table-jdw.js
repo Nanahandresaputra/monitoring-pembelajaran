@@ -1,47 +1,46 @@
-import { Button, Popconfirm, Table, Tag } from "antd";
+import { Button, Popconfirm, Table } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableJdw = ({ data, onOpenUpdate }) => {
+const TableJdw = ({ data, onOpenUpdate, setGetId, kelas, days, handleDelete }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
-  const filterTest = [...new Set(data.map((datas) => datas.test))].map(
-    (test) => ({ text: test, value: test })
-  );
-  const filterDay = [...new Set(data.map((datas) => datas.day))].map((day) => ({
+  const filterKelas = [...new Set(kelas.map((datas) => datas.kelas))].map((datas) => ({ text: datas, value: datas }));
+
+  const filterDay = [...new Set(days.map((datas) => datas))].map((day) => ({
     text: day,
     value: day,
   }));
 
   const columns = [
     {
-      title: "Nama",
-      dataIndex: "nama",
-      key: "nama",
+      title: "Pengampu",
+      dataIndex: "pengampu",
+      key: "pengampu",
     },
     {
-      title: "Lorem",
-      dataIndex: "lorem",
-      key: "lorem",
+      title: "Mata Kuliah",
+      dataIndex: "matkul",
+      key: "matkul",
     },
     {
-      title: "Test",
-      dataIndex: "test",
-      key: "test",
-      filters: filterTest,
-      onFilter: (value, record) => record.test === value,
+      title: "Kelas",
+      dataIndex: "kelas",
+      key: "kelas",
+      filters: filterKelas,
+      onFilter: (value, record) => record.kelas === value,
     },
     {
-      title: "Day",
-      dataIndex: "day",
-      key: "day",
+      title: "Hari",
+      dataIndex: "hari",
+      key: "hari",
       filters: filterDay,
-      onFilter: (value, record) => record.day === value,
+      onFilter: (value, record) => record.hari === value,
     },
     {
-      title: "Time",
-      dataIndex: "time",
-      key: "time",
+      title: "Jam",
+      dataIndex: "jam",
+      key: "jam",
     },
     {
       title: "Action",
@@ -51,17 +50,10 @@ const TableJdw = ({ data, onOpenUpdate }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={onOpenUpdate}>
+            <Button type="primary" onClick={() => onOpenUpdate(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
+            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
@@ -76,12 +68,11 @@ const TableJdw = ({ data, onOpenUpdate }) => {
     <Table
       columns={columns}
       dataSource={data}
-      rowClassName={(record, index) =>
-        record.key === selectedRow && "bg-[#fafafa]"
-      }
+      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
       onRow={(record) => {
         return {
           onClick: () => {
+            setGetId(record.key);
             setSelectedRow(record.key);
           },
         };

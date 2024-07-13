@@ -1,52 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "antd";
 import CardContainer from "../../../components/card-container";
 import InputSearch from "../../../components/input-search";
 import TableJdw from "../../../components/aka/jdw/table-jdw";
 import FormJadwal from "../../../components/aka/jdw/form-jadwal";
+import { useDispatch, useSelector } from "react-redux";
+import { addJadwalsAction, deleteJadwalsAction, getFakultasAction, getJadwalsAction, getMatkulAction, updateJadwalsAction } from "../../../store/action/akademik";
+import { openNotifications } from "../../../utils/notification";
+import { getKelasAction } from "./../../../store/action/mahasiswa";
+import { getDosenAction } from "./../../../store/action/dosen";
+import moment from "moment";
+import dayjs from "dayjs";
 
 const Jdw = () => {
   const [searchData, setSearchData] = useState("");
+  const { jadwal, matkul } = useSelector((state) => state.akademik);
+  const { kelasMhs } = useSelector((state) => state.mahasiswa);
+  const { dosen } = useSelector((state) => state.dosen);
+  const [getId, setGetId] = useState(-1);
 
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  const dispatch = useDispatch();
 
-  const lorem = [
-    "Lorem ipsum dolor",
-    "sit amet",
-    "consectetur adip",
-    "condimentum erat nec",
-    "consectetur erat",
-    "Vestibulum ante ipsum primis in faucibus",
-  ];
+  const getJadwalData = () => {
+    dispatch(getJadwalsAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
 
-  const test = ["Test 1A", "Test 2A", "Test 3B", "Test 4A", "Test 5A"];
+  const getMatkulData = () => {
+    dispatch(getMatkulAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
+  const getKelasData = () => {
+    dispatch(getKelasAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
+  const getDosenData = () => {
+    dispatch(getDosenAction()).catch((err) => openNotifications(err.errorCode, err.message));
+  };
 
-  const data = new Array(12).fill().map((_, index) => ({
-    key: index,
-    nama: `nama samar ${index}`,
-    test: test[Math.floor(Math.random(index) * test.length)],
-    lorem: lorem[Math.floor(Math.random(index) * lorem.length)],
-    day: days[Math.floor(Math.random(index) * days.length)],
-    time: "09.00 - 10.00",
+  let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+  const data = jadwal?.map((datas) => ({
+    key: datas.id,
+    pengampu: datas.nama,
+    kelas: datas.kelas,
+    matkul: datas.matkul,
+    hari: datas.hari,
+    jam: datas.jam,
   }));
 
-  let searchFilter = searchData
-    ? data.filter(
-        (datas) =>
-          `${datas.nama}`
-            .toUpperCase()
-            .includes(`${searchData}`.toUpperCase()) ||
-          `${datas.lorem}`.toUpperCase().includes(`${searchData}`.toUpperCase())
-      )
-    : data;
+  let searchFilter = searchData ? data.filter((datas) => `${datas.pengampu}`.toUpperCase().includes(`${searchData}`.toUpperCase()) || `${datas.matkul}`.toUpperCase().includes(`${searchData}`.toUpperCase())) : data;
 
   const [form] = Form.useForm();
 
@@ -58,9 +58,14 @@ const Jdw = () => {
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        isModalOpenUpdate(false);
-        form.resetFields();
+        dispatch(updateJadwalsAction({ ...res, jam: `${dayjs(res.jam[0].$d).format("HH:mm")} - ${dayjs(res.jam[1].$d).format("HH:mm")}` }, getId))
+          .then((result) => {
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenUpdate(false);
+            form.resetFields();
+            getJadwalData();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -70,9 +75,14 @@ const Jdw = () => {
     form
       .validateFields()
       .then((res) => {
-        console.log(res);
-        setIsModalOpenAdd(false);
-        form.resetFields();
+        dispatch(addJadwalsAction({ ...res, jam: `${dayjs(res.jam[0].$d).format("HH:mm")} - ${dayjs(res.jam[1].$d).format("HH:mm")}` }))
+          .then((result) => {
+            openNotifications(result.errorCode, result.message);
+            setIsModalOpenAdd(false);
+            form.resetFields();
+            getJadwalData();
+          })
+          .catch((err) => openNotifications(err.errorCode, err.message));
       })
       .catch((err) => console.log(err));
   };
@@ -87,43 +97,65 @@ const Jdw = () => {
     form.resetFields();
   };
 
-  const onOpenUpdate = () => {
+  const onOpenUpdate = (id) => {
+    getKelasData();
+    getMatkulData();
+    getDosenData();
+    let initialValue = jadwal?.find((data) => data.id === id);
+
+    let jam = initialValue.jam;
+    let [start, end] = jam.split("-");
+    let jamValue = [dayjs(start, "hh:mm"), dayjs(end, "hh:mm")];
+
+    let formIntitial = {
+      ...initialValue,
+      dosen_id: dosen?.find((data) => data.nama === initialValue.nama)?.id,
+      kelas_id: kelasMhs?.find((data) => data.kelas === initialValue.kelas)?.id,
+      matkul_id: matkul?.find((data) => data.matkul === initialValue.matkul)?.id,
+      jam: jamValue,
+    };
+
+    form.setFieldsValue(formIntitial);
     setIsModalOpenUpdate(true);
-    form.setFieldsValue({ status: 0 });
   };
 
   const onOpenAdd = () => {
+    getMatkulData();
+    getKelasData();
+    getDosenData();
     setIsModalOpenAdd(true);
-    form.setFieldsValue({ status: 0 });
   };
+
+  const handleDelete = (id) => {
+    dispatch(deleteJadwalsAction(id))
+      .then((result) => {
+        openNotifications(result.errorCode, result.message);
+        getJadwalData();
+      })
+      .catch((err) => openNotifications(err.errorCode, err.message));
+  };
+
+  useEffect(() => {
+    getJadwalData();
+  }, []);
 
   return (
     <CardContainer>
-      <Modal
-        title="Update data 1"
-        open={isModalOpenUpdate}
-        onOk={handleUpdate}
-        onCancel={handleCancelUpdate}
-      >
-        <FormJadwal data={data} days={days} form={form} />
+      <Modal title="Edit jadwal" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+        <FormJadwal data={data} days={days} form={form} kelas={kelasMhs} dosen={dosen} matkul={matkul} />
       </Modal>
-      <Modal
-        title="Add data 1"
-        open={isModalOpenAdd}
-        onOk={handleAdd}
-        onCancel={handleCancelAdd}
-      >
-        <FormJadwal data={data} days={days} form={form} />
+      <Modal title="Tambah jadwal" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+        <FormJadwal data={data} days={days} form={form} kelas={kelasMhs} dosen={dosen} matkul={matkul} />
       </Modal>
 
       <div className="flex justify-between items-center">
-        <InputSearch placeholder="cari data" setState={setSearchData} />
+        <InputSearch placeholder="cari berdasar pengampu atau matkul" setState={setSearchData} />
         <Button type="primary" className="font-medium" onClick={onOpenAdd}>
           + Tambah
         </Button>
       </div>
 
-      <TableJdw data={searchFilter} onOpenUpdate={onOpenUpdate} />
+      <TableJdw data={searchFilter} days={days} kelas={kelasMhs} onOpenUpdate={onOpenUpdate} setGetId={setGetId} handleDelete={handleDelete} />
     </CardContainer>
   );
 };

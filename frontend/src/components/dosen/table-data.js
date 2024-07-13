@@ -2,21 +2,14 @@ import { Button, Popconfirm, Table, Tag } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableDataDsn = ({ data, onOpen }) => {
+const TableDataDsn = ({ data, onOpen, getDosenDetail, setGetId, handleDelete }) => {
   const [selectedRow, setSelectedRow] = useState("");
-
-  const dataSource = data.map((datas, index) => ({
-    key: index,
-    code: datas.code,
-    nama: datas.nama,
-    status: datas.status,
-  }));
 
   const columns = [
     {
-      title: "Code",
-      dataIndex: "code",
-      key: "code",
+      title: "Nidn",
+      dataIndex: "nidn",
+      key: "nidn",
     },
     {
       title: "Nama",
@@ -56,17 +49,10 @@ const TableDataDsn = ({ data, onOpen }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={onOpen}>
+            <Button type="primary" onClick={() => onOpen(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
+            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
@@ -79,13 +65,13 @@ const TableDataDsn = ({ data, onOpen }) => {
   return (
     <Table
       columns={columns}
-      dataSource={dataSource}
-      rowClassName={(record, index) =>
-        record.key === selectedRow && "bg-[#fafafa]"
-      }
+      dataSource={data}
+      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
       onRow={(record) => {
         return {
           onClick: () => {
+            getDosenDetail(record.key);
+            setGetId(record.key);
             setSelectedRow(record.key);
           },
         };

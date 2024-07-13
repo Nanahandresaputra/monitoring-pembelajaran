@@ -2,36 +2,21 @@ import { Button, Popconfirm, Table, Tag } from "antd";
 import React, { useState } from "react";
 import { FaEdit, FaRegTrashAlt } from "react-icons/fa";
 
-const TableMahasiswa = ({ data, onOpen }) => {
+const TableMahasiswa = ({ data, onOpenUpdate, setGetId, handleDelete }) => {
   const [selectedRow, setSelectedRow] = useState("");
 
-  const dataSource = data.map((datas, index) => ({
-    key: index,
-    code: datas.code,
-    nama: datas.nama,
-    class: datas.class,
-    prod: datas.prod,
-    fax: datas.fax,
-    status: datas.status,
-    // action: datas.action,
-  }));
-
-  const filterClass = [...new Set(data.map((datas) => datas.class))].map(
-    (dataClass) => ({ text: dataClass, value: dataClass })
-  );
-  const filterProd = [...new Set(data.map((datas) => datas.prod))].map(
-    (prod) => ({ text: prod, value: prod })
-  );
-  const filterFax = [...new Set(data.map((datas) => datas.fax))].map((fax) => ({
+  const filterKelas = [...new Set(data.map((datas) => datas.kelas))].map((dataClass) => ({ text: dataClass, value: dataClass }));
+  const filterProdi = [...new Set(data.map((datas) => datas.prodi))].map((prod) => ({ text: prod, value: prod }));
+  const filterFakultas = [...new Set(data.map((datas) => datas.fakultas))].map((fax) => ({
     text: fax,
     value: fax,
   }));
 
   const columns = [
     {
-      title: "Code",
-      dataIndex: "code",
-      key: "code",
+      title: "Nim",
+      dataIndex: "nim",
+      key: "nim",
     },
     {
       title: "Nama",
@@ -39,25 +24,25 @@ const TableMahasiswa = ({ data, onOpen }) => {
       key: "nama",
     },
     {
-      title: "Class",
-      dataIndex: "class",
-      key: "class",
-      filters: filterClass,
-      onFilter: (value, record) => record.class === value,
+      title: "Kelas",
+      dataIndex: "kelas",
+      key: "kelas",
+      filters: filterKelas,
+      onFilter: (value, record) => record.kelas === value,
     },
     {
-      title: "Prod",
-      dataIndex: "prod",
-      key: "prod",
-      filters: filterProd,
-      onFilter: (value, record) => record.prod === value,
+      title: "Program Studi",
+      dataIndex: "prodi",
+      key: "prodi",
+      filters: filterProdi,
+      onFilter: (value, record) => record.prodi === value,
     },
     {
-      title: "Fax",
-      dataIndex: "fax",
-      key: "fax",
-      filters: filterFax,
-      onFilter: (value, record) => record.prod === value,
+      title: "Fakultas",
+      dataIndex: "fakultas",
+      key: "fakultas",
+      filters: filterFakultas,
+      onFilter: (value, record) => record.fakultas === value,
     },
     {
       title: "Status",
@@ -92,17 +77,10 @@ const TableMahasiswa = ({ data, onOpen }) => {
       render: (_, record) => {
         return (
           <div className="flex items-center space-x-5">
-            <Button type="primary" onClick={onOpen}>
+            <Button type="primary" onClick={() => onOpenUpdate(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm
-              title="Hapus data"
-              description="Apakah yakin ingin menghapus data ini?"
-              onConfirm={() => console.log("confirm")}
-              onCancel={() => console.log("cancel")}
-              okText="Ya"
-              cancelText="Tidak"
-            >
+            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
@@ -115,13 +93,12 @@ const TableMahasiswa = ({ data, onOpen }) => {
   return (
     <Table
       columns={columns}
-      dataSource={dataSource}
-      rowClassName={(record, index) =>
-        record.key === selectedRow && "bg-[#fafafa]"
-      }
+      dataSource={data}
+      rowClassName={(record, index) => record.key === selectedRow && "bg-[#fafafa]"}
       onRow={(record) => {
         return {
           onClick: () => {
+            setGetId(record.key);
             setSelectedRow(record.key);
           },
         };

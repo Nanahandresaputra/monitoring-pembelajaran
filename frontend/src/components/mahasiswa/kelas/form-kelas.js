@@ -1,22 +1,18 @@
-import { Form, Input } from "antd";
+import { Form, Input, Select } from "antd";
 import React from "react";
 
-const FormKelas = ({ form }) => {
+const FormKelas = ({ form, data }) => {
+  const optionTest = data.map((datas) => ({
+    value: datas.id,
+    label: datas.fakultas,
+  }));
   return (
-    <Form layout="vertical" form={form}>
-      <Form.Item
-        name="class"
-        label="Class"
-        rules={[{ required: true, message: "masukan class" }]}
-      >
-        <Input />
+    <Form layout="vertical" form={form} autoComplete="off">
+      <Form.Item name="kelas" label="Kelas" rules={[{ required: true, message: "masukan kelas" }]}>
+        <Input placeholder="kelas" />
       </Form.Item>
-      <Form.Item
-        name="fax"
-        label="Fax"
-        rules={[{ required: true, message: "masukan fax " }]}
-      >
-        <Input />
+      <Form.Item name="fakultas_id" label="Fakultas" rules={[{ required: true, message: "fakultas belum dipilih" }]}>
+        <Select options={optionTest} placeholder="--- pilih fakultas ---" />
       </Form.Item>
     </Form>
   );
