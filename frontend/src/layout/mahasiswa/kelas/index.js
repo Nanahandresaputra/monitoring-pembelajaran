@@ -37,7 +37,7 @@ const Kelas = () => {
   const getKelas = () => {
     dispatch(getKelasAction())
       .then((res) => {
-        if (res.data[0].id) {
+        if (res.data[0]?.id) {
           setGetId(res.data[0].id);
           getKelasDetail(res.data[0].id);
         }

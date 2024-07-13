@@ -34,7 +34,7 @@ const Dosen = () => {
   const getDosen = () => {
     dispatch(getDosenAction())
       .then((res) => {
-        if (res.data[0].id) {
+        if (res.data[0]?.id) {
           setGetId(res.data[0].id);
           getDosenDetail(res.data[0].id);
         }
