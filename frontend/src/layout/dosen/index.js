@@ -11,6 +11,7 @@ import { openNotifications } from "../../utils/notification";
 
 const Dosen = () => {
   const { dosen, dosenDetail } = useSelector((state) => state.dosen);
+  const { loadingPost } = useSelector((state) => state.loadingData);
   const [searchData, setSearchData] = useState("");
   const [getId, setGetId] = useState(-1);
 
@@ -33,8 +34,10 @@ const Dosen = () => {
   const getDosen = () => {
     dispatch(getDosenAction())
       .then((res) => {
-        setGetId(res.data[0].id);
-        getDosenDetail(res.data[0].id);
+        if (res.data[0].id) {
+          setGetId(res.data[0].id);
+          getDosenDetail(res.data[0].id);
+        }
       })
       .catch((err) => openNotifications(err.errorCode, err.message));
   };
@@ -113,10 +116,10 @@ const Dosen = () => {
 
   return (
     <section className="grid grid-cols-9 gap-x-4">
-      <Modal title="Update data 1" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Update data 1" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormDosen form={form} />
       </Modal>
-      <Modal title="Add data 1" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Add data 1" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormDosen form={form} />
       </Modal>
       <div className="col-span-5">

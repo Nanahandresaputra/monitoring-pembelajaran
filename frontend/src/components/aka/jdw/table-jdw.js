@@ -53,11 +53,11 @@ const TableJdw = ({ data, onOpenUpdate, setGetId, kelas, days, handleDelete }) =
             <Button type="primary" onClick={() => onOpenUpdate(record.key)}>
               <FaEdit />
             </Button>
-            <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
+            {/* <Popconfirm title="Hapus data" description="Apakah yakin ingin menghapus data ini?" onConfirm={() => handleDelete(record.key)} onCancel={() => console.log("cancel")} okText="Ya" cancelText="Tidak">
               <Button>
                 <FaRegTrashAlt />
               </Button>
-            </Popconfirm>
+            </Popconfirm> */}
           </div>
         );
       },

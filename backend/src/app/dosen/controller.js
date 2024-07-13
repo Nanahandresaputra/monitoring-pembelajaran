@@ -47,7 +47,7 @@ const getDosenDetail = async (req, res, next) => {
 const addDosen = async (req, res, next) => {
   const { nama, nidn, status } = req.body;
   try {
-    await db.query(`insert into dosen (nama, nidn, status) values ('${nama}', '${nidn}', '${status}')`);
+    await db.query(`insert into dosen (nama, nidn, status) values ('${nama}', ${nidn}, ${status})`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {
@@ -69,7 +69,7 @@ const updateDosen = async (req, res, next) => {
     if (dosen.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
-      await db.query(`update dosen set nama = '${nama}', nidn = '${nidn}', status = '${status}' where dosen.id = ${id}`);
+      await db.query(`update dosen set nama = '${nama}', nidn = ${nidn}, status = ${status} where dosen.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {

@@ -23,7 +23,7 @@ const getJadwalDosen = async (req, res, next) => {
 const addjadwalDosen = async (req, res, next) => {
   const { dosen_id, matkul_id, kelas_id, jam, hari } = req.body;
   try {
-    await db.query(`insert into jadwal_dosen (dosen_id, matkul_id, kelas_id, jam, hari) values ('${dosen_id}', '${matkul_id}', '${kelas_id}', '${jam}', '${hari}')`);
+    await db.query(`insert into jadwal_dosen (dosen_id, matkul_id, kelas_id, jam, hari) values (${dosen_id}, ${matkul_id}, ${kelas_id}, '${jam}', '${hari}')`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {
@@ -44,7 +44,7 @@ const updatejadwalDosen = async (req, res, next) => {
     if (jadwalDosenData.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
-      await db.query(`update jadwal_dosen set dosen_id = '${dosen_id}', matkul_id = '${matkul_id}', kelas_id = '${kelas_id}', jam = '${jam}', hari = '${hari}' where jadwal_dosen.id = ${id}`);
+      await db.query(`update jadwal_dosen set dosen_id = '${dosen_id}', matkul_id = '${matkul_id}', kelas_id = ${kelas_id}, jam = '${jam}', hari = '${hari}' where jadwal_dosen.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {

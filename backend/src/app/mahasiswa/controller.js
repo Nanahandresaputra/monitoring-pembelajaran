@@ -22,7 +22,7 @@ const getMahasiswa = async (req, res, next) => {
 const addMahasiswa = async (req, res, next) => {
   const { nama, nim, prodi_id, fakultas_id, kelas_id, status } = req.body;
   try {
-    await db.query(`insert into mahasiswa (nama, nim, prodi_id, fakultas_id, kelas_id, status) values ('${nama}', '${nim}', '${prodi_id}', '${fakultas_id}', '${kelas_id}', '${status}')`);
+    await db.query(`insert into mahasiswa (nama, nim, prodi_id, fakultas_id, kelas_id, status) values ('${nama}', ${nim}, ${prodi_id}, ${fakultas_id}, ${kelas_id}, ${status})`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {
@@ -43,7 +43,7 @@ const updateMahasiswa = async (req, res, next) => {
     if (mahasiswaData.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
-      await db.query(`update mahasiswa set nama = '${nama}',  nim = '${nim}',  prodi_id = '${prodi_id}', fakultas_id='${fakultas_id}',  kelas_id = '${kelas_id}',  status = '${status}' where mahasiswa.id = ${id}`);
+      await db.query(`update mahasiswa set nama = '${nama}',  nim = ${nim},  prodi_id = ${prodi_id}, fakultas_id=${fakultas_id},  kelas_id = ${kelas_id},  status = ${status} where mahasiswa.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {

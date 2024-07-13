@@ -14,6 +14,8 @@ import { getFakultasAction } from "../../../store/action/akademik";
 const Kelas = () => {
   const { kelasMhs, kelasDetail } = useSelector((state) => state.mahasiswa);
   const { fakultas } = useSelector((state) => state.akademik);
+  const { loadingPost } = useSelector((state) => state.loadingData);
+
   const [searchData, setSearchData] = useState("");
   const [getId, setGetId] = useState(-1);
 
@@ -35,8 +37,10 @@ const Kelas = () => {
   const getKelas = () => {
     dispatch(getKelasAction())
       .then((res) => {
-        setGetId(res.data[0].id);
-        getKelasDetail(res.data[0].id);
+        if (res.data[0].id) {
+          setGetId(res.data[0].id);
+          getKelasDetail(res.data[0].id);
+        }
       })
       .catch((err) => openNotifications(err.errorCode, err.message));
   };
@@ -141,10 +145,10 @@ const Kelas = () => {
 
   return (
     <section className="grid grid-cols-9 gap-x-4">
-      <Modal title="Update List data" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Update List data" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormKelas data={fakultas} form={form} />
       </Modal>
-      <Modal title="Add List data" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Add List data" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormKelas data={fakultas} form={form} />
       </Modal>
       <div className="col-span-5">

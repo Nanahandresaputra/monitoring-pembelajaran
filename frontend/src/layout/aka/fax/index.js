@@ -11,6 +11,8 @@ import { openNotifications } from "../../../utils/notification";
 const Faxu = () => {
   const [searchData, setSearchData] = useState("");
   const { fakultas } = useSelector((state) => state.akademik);
+  const { loadingPost } = useSelector((state) => state.loadingData);
+
   const [getId, setGetId] = useState(-1);
 
   const data = fakultas.map((datas) => ({
@@ -100,10 +102,10 @@ const Faxu = () => {
 
   return (
     <CardContainer>
-      <Modal title="Edit Fakultas" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Edit Fakultas" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormFax form={form} />
       </Modal>
-      <Modal title="Tambah Fakultas" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Tambah Fakultas" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormFax form={form} />
       </Modal>
       <div className="flex justify-between items-center">

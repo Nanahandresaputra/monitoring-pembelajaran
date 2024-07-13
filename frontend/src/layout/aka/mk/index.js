@@ -13,6 +13,7 @@ const MK = () => {
   const [getId, setGetId] = useState(-1);
 
   const { matkul } = useSelector((state) => state.akademik);
+  const { loadingPost } = useSelector((state) => state.loadingData);
 
   const data = matkul.map((datas) => ({
     key: datas.id,
@@ -100,10 +101,10 @@ const MK = () => {
 
   return (
     <CardContainer>
-      <Modal title="Edit Mata Kuliah" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Edit Mata Kuliah" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormMk form={form} />
       </Modal>
-      <Modal title="Tambah Mata Kuliah" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Tambah Mata Kuliah" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormMk form={form} />
       </Modal>
       <div className="flex justify-between items-center">

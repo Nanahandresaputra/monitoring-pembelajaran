@@ -12,6 +12,7 @@ import { getFakultasAction, getProdiAction } from "../../../store/action/akademi
 const ListMahasiswa = () => {
   const { kelasMhs, mahasiswa } = useSelector((state) => state.mahasiswa);
   const { prodi, fakultas } = useSelector((state) => state.akademik);
+  const { loadingPost } = useSelector((state) => state.loadingData);
 
   const [searchData, setSearchData] = useState("");
   const [getId, setGetId] = useState(-1);
@@ -130,10 +131,10 @@ const ListMahasiswa = () => {
 
   return (
     <CardContainer>
-      <Modal title="Edit data Mahasiswa" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Edit data Mahasiswa" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormMahasiswa form={form} prodi={prodi} fakultas={fakultas} kelas={kelasMhs} />
       </Modal>
-      <Modal title="Tambah data Mahasiswa" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Tambah data Mahasiswa" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormMahasiswa form={form} prodi={prodi} fakultas={fakultas} kelas={kelasMhs} />
       </Modal>
       <div className="flex justify-between items-center">

@@ -9,7 +9,6 @@ import { addJadwalsAction, deleteJadwalsAction, getFakultasAction, getJadwalsAct
 import { openNotifications } from "../../../utils/notification";
 import { getKelasAction } from "./../../../store/action/mahasiswa";
 import { getDosenAction } from "./../../../store/action/dosen";
-import moment from "moment";
 import dayjs from "dayjs";
 
 const Jdw = () => {
@@ -17,6 +16,8 @@ const Jdw = () => {
   const { jadwal, matkul } = useSelector((state) => state.akademik);
   const { kelasMhs } = useSelector((state) => state.mahasiswa);
   const { dosen } = useSelector((state) => state.dosen);
+  const { loadingPost } = useSelector((state) => state.loadingData);
+
   const [getId, setGetId] = useState(-1);
 
   const dispatch = useDispatch();
@@ -141,10 +142,10 @@ const Jdw = () => {
 
   return (
     <CardContainer>
-      <Modal title="Edit jadwal" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Edit jadwal" open={isModalOpenUpdate} onOk={handleUpdate} okButtonProps={{ loading: loadingPost }} onCancel={handleCancelUpdate}>
         <FormJadwal data={data} days={days} form={form} kelas={kelasMhs} dosen={dosen} matkul={matkul} />
       </Modal>
-      <Modal title="Tambah jadwal" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Tambah jadwal" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormJadwal data={data} days={days} form={form} kelas={kelasMhs} dosen={dosen} matkul={matkul} />
       </Modal>
 

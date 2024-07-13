@@ -41,7 +41,7 @@ const getKelasDetail = async (req, res, next) => {
 const addKelas = async (req, res, next) => {
   const { kelas, fakultas_id } = req.body;
   try {
-    await db.query(`insert into kelas (kelas, fakultas_id) values ('${kelas}', '${fakultas_id}')`);
+    await db.query(`insert into kelas (kelas, fakultas_id) values ('${kelas}', ${fakultas_id})`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {
@@ -62,7 +62,7 @@ const updateKelas = async (req, res, next) => {
     if (kelasData.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
-      await db.query(`update kelas set kelas = '${kelas}',  fakultas_id='${fakultas_id}' where kelas.id = ${id}`);
+      await db.query(`update kelas set kelas = '${kelas}',  fakultas_id=${fakultas_id} where kelas.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {

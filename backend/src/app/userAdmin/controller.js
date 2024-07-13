@@ -20,7 +20,7 @@ const getUsers = async (req, res, next) => {
 const addUser = async (req, res, next) => {
   const { nama, username, password, status } = req.body;
   try {
-    await db.query(`insert into useradmin (nama, username, password, status) values ('${nama}', '${username}', '${maskingPwd(password)}', '${status}')`);
+    await db.query(`insert into useradmin (nama, username, password, status) values ('${nama}', '${username}', '${maskingPwd(password)}', ${status})`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {
@@ -40,7 +40,7 @@ const updateUser = async (req, res, next) => {
     if (users.rowCount < 1) {
       return res.json(errorCode(9001));
     } else {
-      await db.query(`update useradmin set nama = '${nama}', username = '${username}', password = '${maskingPwd(password)}', status = '${status}' where useradmin.id = ${id}`);
+      await db.query(`update useradmin set nama = '${nama}', username = '${username}', password = '${maskingPwd(password)}', status = ${status} where useradmin.id = ${id}`);
       return res.json(errorCode(1000));
     }
   } catch (err) {

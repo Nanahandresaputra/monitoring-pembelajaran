@@ -10,6 +10,7 @@ import { openNotifications } from "../../../utils/notification";
 
 const Prod = () => {
   const { prodi, fakultas } = useSelector((state) => state.akademik);
+  const { loadingPost } = useSelector((state) => state.loadingData);
   const [getId, setGetId] = useState(-1);
 
   const [searchData, setSearchData] = useState("");
@@ -108,10 +109,10 @@ const Prod = () => {
 
   return (
     <CardContainer>
-      <Modal title="Edit Program studi" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate}>
+      <Modal title="Edit Program studi" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormProd data={fakultas} form={form} />
       </Modal>
-      <Modal title="Tambah Program studi" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Tambah Program studi" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormProd data={fakultas} form={form} />
       </Modal>
       <div className="flex justify-between items-center">

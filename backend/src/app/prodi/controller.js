@@ -21,7 +21,7 @@ const getProdi = async (req, res, next) => {
 const addProdi = async (req, res, next) => {
   const { prodi, fakultas_id } = req.body;
   try {
-    await db.query(`insert into prodi (prodi, fakultas_id) values ('${prodi}', '${fakultas_id}')`);
+    await db.query(`insert into prodi (prodi, fakultas_id) values ('${prodi}', ${fakultas_id})`);
     return res.json(errorCode(1000));
   } catch (err) {
     if (err && err.name === "error") {

@@ -11,6 +11,7 @@ import { openNotifications } from "./../../utils/notification";
 const DataAdmin = () => {
   const [searchData, setSearchData] = useState("");
   const { users } = useSelector((state) => state.admin);
+  const { loadingPost } = useSelector((state) => state.loadingData);
 
   const data = users.map((data) => ({
     key: data.id,
@@ -73,7 +74,7 @@ const DataAdmin = () => {
 
   return (
     <CardContainer>
-      <Modal title="Add data 1" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd}>
+      <Modal title="Add data 1" open={isModalOpenAdd} onOk={handleAdd} onCancel={handleCancelAdd} okButtonProps={{ loading: loadingPost }}>
         <FormAdmin form={form} />
       </Modal>
       <div className="flex justify-between items-center">
