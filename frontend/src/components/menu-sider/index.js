@@ -143,7 +143,7 @@ const MenuSider = ({ collapsed, selection, userData }) => {
               {/* <FaPenToSquare className="text-gray-400" onClick={onOpenUpdate} /> */}
             </p>
 
-            <Button type="primary" onClick={handleLogout}>
+            <Button type="primary" onClick={handleLogout} loading={loadingPost}>
               Logout
             </Button>
           </div>
