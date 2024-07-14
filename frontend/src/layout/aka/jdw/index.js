@@ -16,7 +16,7 @@ const Jdw = () => {
   const { jadwal, matkul } = useSelector((state) => state.akademik);
   const { kelasMhs } = useSelector((state) => state.mahasiswa);
   const { dosen } = useSelector((state) => state.dosen);
-  const { loadingPost } = useSelector((state) => state.loadingData);
+  const { loadingPost, loading } = useSelector((state) => state.loadingData);
 
   const [getId, setGetId] = useState(-1);
 
@@ -141,7 +141,7 @@ const Jdw = () => {
   }, []);
 
   return (
-    <CardContainer>
+    <CardContainer loading={loading}>
       <Modal title="Edit jadwal" open={isModalOpenUpdate} onOk={handleUpdate} okButtonProps={{ loading: loadingPost }} onCancel={handleCancelUpdate}>
         <FormJadwal data={data} days={days} form={form} kelas={kelasMhs} dosen={dosen} matkul={matkul} />
       </Modal>

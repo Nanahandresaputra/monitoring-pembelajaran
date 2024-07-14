@@ -12,7 +12,7 @@ import { getFakultasAction, getProdiAction } from "../../../store/action/akademi
 const ListMahasiswa = () => {
   const { kelasMhs, mahasiswa } = useSelector((state) => state.mahasiswa);
   const { prodi, fakultas } = useSelector((state) => state.akademik);
-  const { loadingPost } = useSelector((state) => state.loadingData);
+  const { loadingPost, loading } = useSelector((state) => state.loadingData);
 
   const [searchData, setSearchData] = useState("");
   const [getId, setGetId] = useState(-1);
@@ -130,7 +130,7 @@ const ListMahasiswa = () => {
   }, []);
 
   return (
-    <CardContainer>
+    <CardContainer loading={loading}>
       <Modal title="Edit data Mahasiswa" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormMahasiswa form={form} prodi={prodi} fakultas={fakultas} kelas={kelasMhs} />
       </Modal>

@@ -14,7 +14,7 @@ import { getFakultasAction } from "../../../store/action/akademik";
 const Kelas = () => {
   const { kelasMhs, kelasDetail } = useSelector((state) => state.mahasiswa);
   const { fakultas } = useSelector((state) => state.akademik);
-  const { loadingPost } = useSelector((state) => state.loadingData);
+  const { loadingPost, loading, loadingDetail } = useSelector((state) => state.loadingData);
 
   const [searchData, setSearchData] = useState("");
   const [getId, setGetId] = useState(-1);
@@ -152,7 +152,7 @@ const Kelas = () => {
         <FormKelas data={fakultas} form={form} />
       </Modal>
       <div className="col-span-5">
-        <CardContainer>
+        <CardContainer loading={loading}>
           <div className="flex justify-between items-center">
             <InputSearch placeholder="cari kelas" setState={setSearchData} />
             <Button type="primary" className="font-medium" onClick={onOpenAdd}>
@@ -164,7 +164,7 @@ const Kelas = () => {
         </CardContainer>
       </div>
       <div className="col-span-4">
-        <CardContainer>
+        <CardContainer loading={loadingDetail}>
           <h3 className="font-medium text-lg">Detail Data Kelas {kelasMhs?.find((data) => data.id === getId)?.kelas}</h3>
 
           <Collapse defaultActiveKey="1" accordion ghost items={collapseItems} size="small" />

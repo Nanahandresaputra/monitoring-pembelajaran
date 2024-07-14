@@ -27,13 +27,13 @@ const Dashboard = () => {
         <p className="text-base font-medium">Selamat datang di aplikasi dashboard monitoring pembelajaran</p>
       </div>
       <div className="grid grid-cols-3 gap-x-8 items-center">
-        <CardDashboard value={dashboardData?.totalDosen} title="Dosen" icon={<LiaChalkboardTeacherSolid className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />} />
-        <CardDashboard value={dashboardData?.totalMahasiswa} title="Mahasiswa" icon={<FaUsersBetweenLines className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />} />
-        <CardDashboard value={dashboardData?.totalAdmin} title="Admin" icon={<FaUserEdit className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />} />
+        <CardDashboard loading={loading} value={dashboardData?.totalDosen} title="Dosen" icon={<LiaChalkboardTeacherSolid className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />} />
+        <CardDashboard loading={loading} value={dashboardData?.totalMahasiswa} title="Mahasiswa" icon={<FaUsersBetweenLines className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />} />
+        <CardDashboard loading={loading} value={dashboardData?.totalAdmin} title="Admin" icon={<FaUserEdit className="text-[2.5rem] p-2 bg-red-500 text-white rounded-md" />} />
       </div>
       <div className="grid grid-cols-5 gap-x-8 items-center">
         <div className="col-span-3">
-          <BarChart value={dashboardData?.fakultasMhs} />
+          <BarChart value={dashboardData?.fakultasMhs} loading={loading} />
         </div>
         <div className="col-span-2">
           <InfoMedia />

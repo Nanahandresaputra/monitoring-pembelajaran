@@ -11,7 +11,7 @@ import { openNotifications } from "../../utils/notification";
 
 const Dosen = () => {
   const { dosen, dosenDetail } = useSelector((state) => state.dosen);
-  const { loadingPost } = useSelector((state) => state.loadingData);
+  const { loadingPost, loading, loadingDetail } = useSelector((state) => state.loadingData);
   const [searchData, setSearchData] = useState("");
   const [getId, setGetId] = useState(-1);
 
@@ -123,7 +123,7 @@ const Dosen = () => {
         <FormDosen form={form} />
       </Modal>
       <div className="col-span-5">
-        <CardContainer>
+        <CardContainer loading={loading}>
           <div className="flex justify-between items-center">
             <InputSearch placeholder="cari nama dosen" setState={setSearchData} />
             <Button type="primary" className="font-medium" onClick={onOpenAdd}>
@@ -135,7 +135,7 @@ const Dosen = () => {
         </CardContainer>
       </div>
       <div className="col-span-4">
-        <CardContainer>
+        <CardContainer loading={loadingDetail}>
           <h3 className="font-medium text-lg">Detail Dosen</h3>
 
           <div className="grid grid-cols-12 gap-y-2">

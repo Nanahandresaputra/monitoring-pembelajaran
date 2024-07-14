@@ -1,6 +1,7 @@
 import React from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { loader } from "../../assets";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -24,7 +25,7 @@ const options = {
   },
 };
 
-const BarChart = ({ value }) => {
+const BarChart = ({ value, loading }) => {
   const data = {
     labels: value?.map((data) => data.fakultas),
     datasets: [
@@ -40,9 +41,13 @@ const BarChart = ({ value }) => {
   return (
     <section className="w-full h-[50vh] flex flex-col bg-white space-y-8 rounded-md drop-shadow-lg shadow-lg items-center pt-[3.5vh]">
       <h3 className="text-xl font-semibold">Bagan Mahasiswa</h3>
-      <div className="w-11/12 h-[35vh]">
-        <Bar options={options} data={data} />
-      </div>
+      {loading ? (
+        <img src={loader} alt="loader" className="w-16" />
+      ) : (
+        <div className="w-11/12 h-[35vh]">
+          <Bar options={options} data={data} />
+        </div>
+      )}
     </section>
   );
 };

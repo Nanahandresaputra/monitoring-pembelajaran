@@ -13,7 +13,7 @@ const MK = () => {
   const [getId, setGetId] = useState(-1);
 
   const { matkul } = useSelector((state) => state.akademik);
-  const { loadingPost } = useSelector((state) => state.loadingData);
+  const { loadingPost, loading } = useSelector((state) => state.loadingData);
 
   const data = matkul.map((datas) => ({
     key: datas.id,
@@ -100,7 +100,7 @@ const MK = () => {
   }, []);
 
   return (
-    <CardContainer>
+    <CardContainer loading={loading}>
       <Modal title="Edit Mata Kuliah" open={isModalOpenUpdate} onOk={handleUpdate} onCancel={handleCancelUpdate} okButtonProps={{ loading: loadingPost }}>
         <FormMk form={form} />
       </Modal>

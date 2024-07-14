@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_TOKEN, SET_LOADING, SET_LOADING_POST } from "../action-types";
+import { GET_TOKEN, SET_LOADING, SET_LOADING_DETAIL, SET_LOADING_POST } from "../action-types";
 import { config } from "../../config";
 
 export const setLoading = (payload) => {
@@ -11,7 +11,7 @@ export const setLoading = (payload) => {
 
 export const setLoadingDetail = (payload) => {
   return {
-    type: SET_LOADING,
+    type: SET_LOADING_DETAIL,
     payload,
   };
 };
