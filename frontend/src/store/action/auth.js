@@ -65,6 +65,7 @@ export const loginAuth = (payload) => {
 export const logoutAuth = () => {
   return (dispatch, getState) => {
     let token = getState().auth.token;
+    dispatch(setLoadingPost(true));
 
     return new Promise((resolve, reject) => {
       axios({
@@ -88,6 +89,6 @@ export const logoutAuth = () => {
             reject(error);
           }
         });
-    });
+    }).finally(() => dispatch(setLoadingPost(false)));
   };
 };
